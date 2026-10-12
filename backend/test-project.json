@@ -1,0 +1,6 @@
+{
+  "title": "Portfolio Website",
+  "description": "Built with React, Express, and PostgreSQL",
+  "tags": ["React", "Express", "Prisma", "PostgreSQL"],
+  "featured": true
+}
