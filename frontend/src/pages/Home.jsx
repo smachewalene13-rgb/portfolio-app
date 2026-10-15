@@ -23,15 +23,21 @@ const item = {
 };
 
 export default function Home() {
+  const [profile, setProfile] = useState(null);
   const [featured, setFeatured] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    api
-      .getProjects()
-      .then((projects) =>
-        setFeatured(projects.filter((p) => p.featured).slice(0, 3))
-      )
+    Promise.all([
+      api.getProfile().catch(() => null),
+      api.getProjects().catch(() => []),
+    ])
+      .then(([profData, projects]) => {
+        if (profData) setProfile(profData);
+        if (Array.isArray(projects)) {
+          setFeatured(projects.filter((p) => p.featured).slice(0, 3));
+        }
+      })
       .catch((err) => console.error(err))
       .finally(() => setLoading(false));
   }, []);
@@ -40,37 +46,37 @@ export default function Home() {
     <PageTransition>
       {/* Hero */}
       <motion.section
-  variants={container}
-  initial="hidden"
-  animate="show"
-  className="max-w-6xl mx-auto px-6 pt-24 pb-16"
->
-  <div className="grid md:grid-cols-2 gap-12 items-center">
-    {/* Left: text */}
-    <div>
-      <motion.p
-        variants={item}
-        className="text-violet-400 text-sm font-medium mb-4 tracking-wider uppercase"
+        variants={container}
+        initial="hidden"
+        animate="show"
+        className="max-w-6xl mx-auto px-6 pt-24 pb-16"
       >
-        Full-Stack Developer
-      </motion.p>
+        <div className="grid md:grid-cols-2 gap-12 items-center">
+          {/* Left: text */}
+          <div>
+            <motion.p
+              variants={item}
+              className="text-violet-400 text-sm font-medium mb-4 tracking-wider uppercase"
+            >
+              {profile?.title || "Full-Stack Developer"}
+            </motion.p>
 
-      <motion.h1
-        variants={item}
-        className="text-5xl md:text-6xl font-bold leading-tight mb-6"
-      >
-        Building modern web experiences with{" "}
-        <span className="text-violet-400">React</span> &{" "}
-        <span className="text-violet-400">Node.js</span>.
-      </motion.h1>
+            <motion.h1
+              variants={item}
+              className="text-5xl md:text-6xl font-bold leading-tight mb-6"
+            >
+              Building modern web experiences with{" "}
+              <span className="text-violet-400">React</span> &{" "}
+              <span className="text-violet-400">Node.js</span>.
+            </motion.h1>
 
-      <motion.p
-        variants={item}
-        className="text-lg text-gray-400 leading-relaxed mb-8"
-      >
-        I design and develop fast, accessible, and beautiful applications
-        that solve real problems.
-      </motion.p>
+            <motion.p
+              variants={item}
+              className="text-lg text-gray-400 leading-relaxed mb-8"
+            >
+              {profile?.bio ||
+                "I design and develop fast, accessible, and beautiful applications that solve real problems."}
+            </motion.p>
 
       <motion.div variants={item} className="flex flex-wrap gap-4">
         <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.98 }}>
@@ -97,7 +103,7 @@ export default function Home() {
       <div className="relative aspect-square rounded-3xl overflow-hidden border border-white/10 bg-white/[0.02]">
         <img
           src="/hero.jpg"
-          alt="Developer at work"
+          alt="Simachew Alene - Full-Stack Developer"
           className="w-full h-full object-cover"
         />
         <div className="absolute inset-0 bg-gradient-to-tr from-violet-500/20 to-transparent pointer-events-none" />

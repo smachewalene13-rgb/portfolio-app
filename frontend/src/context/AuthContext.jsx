@@ -3,7 +3,7 @@ import { createContext, useContext, useEffect, useState } from "react";
 const AuthContext = createContext(null);
 
 const TOKEN_KEY = "portfolio_token";
-const API_URL = "http://localhost:5000/api";
+const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000/api/v1";
 
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
@@ -23,7 +23,7 @@ export function AuthProvider({ children }) {
         if (!res.ok) throw new Error("Invalid token");
         return res.json();
       })
-      .then((data) => setUser(data))
+      .then((data) => setUser(data.user || data))
       .catch(() => {
         localStorage.removeItem(TOKEN_KEY);
         setUser(null);

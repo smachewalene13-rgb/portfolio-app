@@ -2,11 +2,13 @@ import { useState } from "react";
 import PageTransition from "../components/PageTransition";
 import AdminProjects from "../components/admin/AdminProjects";
 import AdminSkills from "../components/admin/AdminSkills";
+import AdminProfile from "../components/admin/AdminProfile";
 import AdminMessages from "../components/admin/AdminMessages";
 
 const TABS = [
   { id: "projects", label: "Projects" },
   { id: "skills", label: "Skills" },
+  { id: "profile", label: "Profile" },
   { id: "messages", label: "Messages" },
 ];
 
@@ -41,6 +43,7 @@ export default function Admin() {
         {/* Content */}
         {tab === "projects" && <AdminProjects />}
         {tab === "skills" && <AdminSkills />}
+        {tab === "profile" && <AdminProfile />}
         {tab === "messages" && <AdminMessages />}
       </div>
     </PageTransition>

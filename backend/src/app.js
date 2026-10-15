@@ -1,34 +1,57 @@
 import express from "express";
-import cors from "cors";
-import dotenv from "dotenv";
-import projectRoutes from "./routes/projectRoutes.js";
-import messageRoutes from "./routes/messageRoutes.js";
-import skillRoutes from "./routes/skillRoutes.js";
-import authRoutes from "./routes/authRoutes.js";
+import helmet from "helmet";
+import { corsMiddleware } from "./config/cors.js";
+import { config } from "./config/env.js";
+import apiV1Router from "./routes/index.js";
+import { apiLimiter } from "./middleware/rateLimiter.js";
+import { notFound } from "./middleware/notFound.js";
+import { errorHandler } from "./middleware/errorHandler.js";
 
-dotenv.config();
+// Legacy route imports for backwards compatibility
+import authRoutes from "./routes/auth.routes.js";
+import projectsRoutes from "./routes/projects.routes.js";
+import skillsRoutes from "./routes/skills.routes.js";
+import contactRoutes from "./routes/contact.routes.js";
 
 const app = express();
 
-app.use(cors());
+// Security headers
+app.use(helmet({
+  crossOriginResourcePolicy: false,
+}));
+
+// CORS
+app.use(corsMiddleware);
+
+// JSON body parser
 app.use(express.json());
 
+// General API rate limiter
+app.use("/api", apiLimiter);
+
+// Root health & status
 app.get("/", (req, res) => {
-  res.json({ status: "ok", message: "Portfolio API is running" });
+  res.json({
+    status: "ok",
+    message: "Portfolio API is operational",
+    docs: "/api/v1/health",
+  });
 });
 
+// Primary Versioned API (REST API v1)
+app.use("/api/v1", apiV1Router);
+
+// Backwards-compatible legacy route mappings (/api/auth, /api/projects, /api/skills, /api/messages)
 app.use("/api/auth", authRoutes);
-app.use("/api/projects", projectRoutes);
-app.use("/api/messages", messageRoutes);
-app.use("/api/skills", skillRoutes);
+app.use("/api/projects", projectsRoutes);
+app.use("/api/skills", skillsRoutes);
+app.use("/api/messages", contactRoutes);
+app.use("/api/contact", contactRoutes);
 
-app.use((req, res) => {
-  res.status(404).json({ error: "Not found" });
-});
+// 404 handler
+app.use(notFound);
 
-app.use((err, req, res, next) => {
-  console.error(err);
-  res.status(err.status || 500).json({ error: err.message || "Server error" });
-});
+// Centralized error handler
+app.use(errorHandler);
 
 export default app;
