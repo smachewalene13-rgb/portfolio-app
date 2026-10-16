@@ -16,7 +16,7 @@ npm run seed
 ```
 
 Default administrator credentials:
-- **Email**: `admin@example.com`
+- **Email**: `smachewalene13@gmail.com`
 - **Password**: `admin1234`
 
 ### 2. Backend Server

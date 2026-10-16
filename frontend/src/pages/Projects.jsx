@@ -1,22 +1,15 @@
-import { useEffect, useState } from "react";
-import { api } from "../api/client";
-import ProjectCard from "../components/ProjectCard";
-import Loader from "../components/Loader";
+import { useState } from "react";
+import useProjects from "../hooks/useProjects";
+import ProjectGrid from "../components/projects/ProjectGrid";
+import ProjectFilter from "../components/projects/ProjectFilter";
+import Loader from "../components/common/Loader";
+import ErrorMessage from "../components/common/ErrorMessage";
+import SectionTitle from "../components/common/SectionTitle";
 import PageTransition from "../components/PageTransition";
 
 export default function Projects() {
-  const [projects, setProjects] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const { projects, loading, error } = useProjects({ published: true });
   const [filter, setFilter] = useState("all");
-
-  useEffect(() => {
-    api
-      .getProjects()
-      .then(setProjects)
-      .catch((err) => setError(err.message))
-      .finally(() => setLoading(false));
-  }, []);
 
   const allTags = ["all", ...new Set(projects.flatMap((p) => p.tags ?? []))];
 
@@ -28,40 +21,28 @@ export default function Projects() {
   return (
     <PageTransition>
       <div className="max-w-6xl mx-auto px-6 py-16">
-        <h1 className="text-4xl font-bold mb-2">Projects</h1>
-        <p className="text-gray-400 mb-8">Things I've built and shipped.</p>
+        <SectionTitle
+          title="Featured Projects"
+          subtitle="Explore recent full-stack applications, developer tools, and client projects."
+        />
 
-        {!loading && !error && (
-          <div className="flex flex-wrap gap-2 mb-10">
-            {allTags.map((tag) => (
-              <button
-                key={tag}
-                onClick={() => setFilter(tag)}
-                className={`px-4 py-1.5 rounded-full text-sm transition-colors border ${
-                  filter === tag
-                    ? "bg-violet-500 border-violet-500 text-white"
-                    : "border-white/10 text-gray-400 hover:border-violet-500/50 hover:text-white"
-                }`}
-              >
-                {tag}
-              </button>
-            ))}
-          </div>
+        {!loading && !error && projects.length > 0 && (
+          <ProjectFilter
+            tags={allTags}
+            activeFilter={filter}
+            onSelectFilter={setFilter}
+          />
         )}
 
-        {loading && <Loader />}
-        {error && <p className="text-red-400">Error: {error}</p>}
+        {loading && <Loader label="Loading projects catalog..." />}
+        {error && <ErrorMessage message={error} />}
 
         {!loading && !error && visible.length === 0 && (
-          <p className="text-gray-500">No projects match this filter.</p>
+          <p className="text-gray-500 py-8">No projects match the selected filter.</p>
         )}
 
         {!loading && !error && visible.length > 0 && (
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {visible.map((p, i) => (
-              <ProjectCard key={p.id} project={p} index={i} />
-            ))}
-          </div>
+          <ProjectGrid projects={visible} />
         )}
       </div>
     </PageTransition>

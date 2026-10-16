@@ -1,0 +1,14 @@
+{
+  "name": "portfolio-app-root",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Full-stack personal portfolio application",
+  "scripts": {
+    "dev:backend": "npm --prefix backend run dev",
+    "dev:frontend": "npm --prefix frontend run dev",
+    "test:backend": "npm --prefix backend test",
+    "build:frontend": "npm --prefix frontend run build"
+  },
+  "author": "Simachew Alene",
+  "license": "ISC"
+}

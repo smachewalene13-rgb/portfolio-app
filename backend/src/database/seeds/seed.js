@@ -9,7 +9,7 @@ export async function runSeeds() {
     await client.query("BEGIN");
 
     // 1. Admin User
-    const adminEmail = "admin@example.com";
+    const adminEmail = "smachewalene13@gmail.com";
     const userRes = await client.query("SELECT id FROM admin_users WHERE email = $1", [adminEmail]);
     if (userRes.rows.length === 0) {
       const passwordHash = await bcrypt.hash("admin1234", 10);
@@ -17,7 +17,7 @@ export async function runSeeds() {
         "INSERT INTO admin_users (email, password_hash, name) VALUES ($1, $2, $3)",
         [adminEmail, passwordHash, "Simachew Alene"]
       );
-      console.log("  ✓ Admin user created (admin@example.com / admin1234)");
+      console.log("  ✓ Admin user created (smachewalene13@gmail.com / admin1234)");
     } else {
       console.log("  ℹ Admin user already exists");
     }
@@ -33,7 +33,7 @@ export async function runSeeds() {
           'Full-Stack Developer',
           'Building modern web experiences with React & Node.js. I design and develop fast, accessible, and beautiful applications that solve real problems.',
           'Hi, I am Simachew Alene — a full-stack developer passionate about building delightful web applications. I specialize in React, Node.js, and PostgreSQL, and I care deeply about clean code, accessibility, and performance.',
-          'admin@example.com',
+          'smachewalene13@gmail.com',
           'Addis Ababa, Ethiopia',
           '/hero.jpg',
           '/resume.pdf',

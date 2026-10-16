@@ -1,4 +1,5 @@
 import { contactRepository } from "../repositories/contact.repository.js";
+import emailService from "./email.service.js";
 import { ApiError } from "../utils/ApiError.js";
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -27,12 +28,24 @@ export const contactService = {
     }
     if (!body || !body.trim()) throw ApiError.badRequest("Message content is required");
 
-    return contactRepository.create({
+    const created = await contactRepository.create({
       name: name.trim(),
       email: email.trim().toLowerCase(),
       subject: subject ? subject.trim() : null,
       message: body.trim(),
     });
+
+    // Send instant email notification asynchronously
+    emailService
+      .sendContactNotification({
+        name: created.name,
+        email: created.email,
+        subject: created.subject,
+        message: created.message,
+      })
+      .catch((err) => console.error("Error in contact email alert:", err));
+
+    return created;
   },
 
   async markAsRead(id, isRead = true) {

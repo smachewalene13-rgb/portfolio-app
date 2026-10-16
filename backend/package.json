@@ -8,6 +8,7 @@
     "start": "node src/server.js",
     "migrate": "node src/database/migrate.js",
     "seed": "node src/database/seeds/seed.js",
+    "update-admin": "node src/update-credentials.js",
     "test": "node tests/api.test.js"
   },
   "keywords": [
@@ -27,6 +28,7 @@
     "express-rate-limit": "^8.7.1",
     "helmet": "^8.3.0",
     "jsonwebtoken": "^9.0.2",
+    "nodemailer": "^10.1.1",
     "pg": "^8.23.1"
   }
 }

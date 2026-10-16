@@ -36,7 +36,7 @@ export default function ProjectCard({ project }) {
             rel="noreferrer"
             className="text-violet-400 hover:text-violet-300 transition-colors"
           >
-            Live Demo →
+            Live Demo
           </a>
         )}
         {project.repoUrl && (

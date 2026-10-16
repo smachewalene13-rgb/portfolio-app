@@ -68,7 +68,7 @@ export default function About() {
             </p>
             {profile?.location && (
               <p className="text-sm text-gray-400 flex items-center gap-2 pt-2">
-                <span>📍 Based in {profile.location}</span>
+                <span>Based in {profile.location}</span>
                 {profile.resume_url && (
                   <>
                     <span>•</span>
@@ -90,8 +90,7 @@ export default function About() {
         {/* Experience Section */}
         {experience.length > 0 && (
           <section>
-            <h2 className="text-2xl font-bold mb-8 flex items-center gap-3">
-              <span className="w-2.5 h-2.5 rounded-full bg-violet-400"></span>
+            <h2 className="text-2xl font-bold mb-8">
               Work Experience
             </h2>
             <div className="space-y-8 border-l border-white/10 pl-6 ml-2">
@@ -131,8 +130,7 @@ export default function About() {
         {/* Education Section */}
         {education.length > 0 && (
           <section>
-            <h2 className="text-2xl font-bold mb-8 flex items-center gap-3">
-              <span className="w-2.5 h-2.5 rounded-full bg-violet-400"></span>
+            <h2 className="text-2xl font-bold mb-8">
               Education
             </h2>
             <div className="space-y-8 border-l border-white/10 pl-6 ml-2">
@@ -162,8 +160,7 @@ export default function About() {
         {/* Skills Section */}
         {Object.keys(grouped).length > 0 && (
           <section>
-            <h2 className="text-2xl font-bold mb-8 flex items-center gap-3">
-              <span className="w-2.5 h-2.5 rounded-full bg-violet-400"></span>
+            <h2 className="text-2xl font-bold mb-8">
               Technical Skills
             </h2>
             <div className="space-y-10">

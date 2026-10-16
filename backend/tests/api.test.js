@@ -71,7 +71,7 @@ async function runSmokeTests() {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        email: "admin@example.com",
+        email: "smachewalene13@gmail.com",
         password: "admin1234",
       }),
     });
