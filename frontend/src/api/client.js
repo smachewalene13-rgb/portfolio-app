@@ -6,14 +6,22 @@ import contactApi from "./contactApi";
 
 function getNormalizedApiUrl() {
   const envUrl = (import.meta.env.VITE_API_URL || "").trim();
-  if (!envUrl) {
-    return "http://localhost:5000/api/v1";
+  if (envUrl) {
+    const clean = envUrl.replace(/\/+$/, "");
+    if (!clean.endsWith("/api/v1") && !clean.endsWith("/api")) {
+      return `${clean}/api/v1`;
+    }
+    return clean;
   }
-  const clean = envUrl.replace(/\/+$/, "");
-  if (!clean.endsWith("/api/v1") && !clean.endsWith("/api")) {
-    return `${clean}/api/v1`;
+  // In production (e.g. deployed on Vercel/Netlify), automatically connect to your live Render backend
+  if (
+    typeof window !== "undefined" &&
+    !window.location.hostname.includes("localhost") &&
+    !window.location.hostname.includes("127.0.0.1")
+  ) {
+    return "https://portfolio-backend-mkvd.onrender.com/api/v1";
   }
-  return clean;
+  return "http://localhost:5000/api/v1";
 }
 
 export const API_URL = getNormalizedApiUrl();
