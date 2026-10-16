@@ -48,6 +48,14 @@ app.use("/api/skills", skillsRoutes);
 app.use("/api/messages", contactRoutes);
 app.use("/api/contact", contactRoutes);
 
+// Direct root route mappings (in case VITE_API_URL was entered without /api or /api/v1)
+app.use("/projects", projectsRoutes);
+app.use("/skills", skillsRoutes);
+app.use("/auth", authRoutes);
+app.use("/contact", contactRoutes);
+app.use("/messages", contactRoutes);
+app.use("/profile", apiV1Router);
+
 // 404 handler
 app.use(notFound);
 

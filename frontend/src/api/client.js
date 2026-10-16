@@ -4,23 +4,71 @@ import skillsApi from "./skillsApi";
 import experienceApi from "./experienceApi";
 import contactApi from "./contactApi";
 
-export const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000/api/v1";
+function getNormalizedApiUrl() {
+  const envUrl = (import.meta.env.VITE_API_URL || "").trim();
+  if (!envUrl) {
+    return "http://localhost:5000/api/v1";
+  }
+  const clean = envUrl.replace(/\/+$/, "");
+  if (!clean.endsWith("/api/v1") && !clean.endsWith("/api")) {
+    return `${clean}/api/v1`;
+  }
+  return clean;
+}
+
+export const API_URL = getNormalizedApiUrl();
 export const TOKEN_KEY = "portfolio_token";
 
 export async function request(path, options = {}) {
   const token = localStorage.getItem(TOKEN_KEY);
 
-  const res = await fetch(`${API_URL}${path}`, {
-    headers: {
-      "Content-Type": "application/json",
-      ...(token ? { Authorization: `Bearer ${token}` } : {}),
-    },
-    ...options,
-  });
+  let targetUrl = `${API_URL}${path}`;
+
+  let res;
+  try {
+    res = await fetch(targetUrl, {
+      headers: {
+        "Content-Type": "application/json",
+        ...(token ? { Authorization: `Bearer ${token}` } : {}),
+      },
+      ...options,
+    });
+  } catch (netErr) {
+    throw new Error(
+      "Unable to connect to the backend server. If using Render free tier, the server may be waking up (please wait ~30 seconds and refresh)."
+    );
+  }
+
+  // If 404 and API_URL ends with /api/v1, try fallback without /v1 or direct path
+  if (res.status === 404 && API_URL.includes("/api/v1")) {
+    const fallbackBase = API_URL.replace(/\/api\/v1$/, "");
+    const fallbackUrl = `${fallbackBase}${path}`;
+    try {
+      const fallbackRes = await fetch(fallbackUrl, {
+        headers: {
+          "Content-Type": "application/json",
+          ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        },
+        ...options,
+      });
+      if (fallbackRes.ok) {
+        if (fallbackRes.status === 204) return null;
+        return fallbackRes.json();
+      }
+    } catch {
+      // ignore fallback error and continue to main error reporting
+    }
+  }
 
   if (!res.ok) {
-    const error = await res.json().catch(() => ({ error: "Request failed" }));
-    throw new Error(error.error || `HTTP ${res.status}`);
+    const errorData = await res.json().catch(() => ({}));
+    const msg =
+      errorData.error ||
+      errorData.message ||
+      (res.status === 404
+        ? "API endpoint not found. Please verify the backend URL is deployed and configured correctly."
+        : `Server responded with HTTP ${res.status}`);
+    throw new Error(msg);
   }
 
   if (res.status === 204) return null;
