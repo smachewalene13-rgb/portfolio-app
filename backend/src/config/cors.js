@@ -11,7 +11,13 @@ export const corsOptions = {
   origin: (origin, callback) => {
     // allow requests with no origin (like mobile apps, curl, postman)
     if (!origin) return callback(null, true);
-    if (allowedOrigins.indexOf(origin) !== -1 || process.env.NODE_ENV === "development") {
+    if (
+      allowedOrigins.includes(origin) ||
+      process.env.NODE_ENV !== "production" ||
+      origin.endsWith(".vercel.app") ||
+      origin.endsWith(".netlify.app") ||
+      origin.endsWith(".onrender.com")
+    ) {
       return callback(null, true);
     }
     return callback(new Error("CORS policy does not allow access from this origin."));

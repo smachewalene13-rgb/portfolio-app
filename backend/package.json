@@ -8,7 +8,6 @@
     "start": "node src/server.js",
     "migrate": "node src/database/migrate.js",
     "seed": "node src/database/seeds/seed.js",
-    "update-admin": "node src/update-credentials.js",
     "test": "node tests/api.test.js"
   },
   "keywords": [
