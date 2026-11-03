@@ -83,34 +83,40 @@ export async function runSeeds() {
     if (parseInt(projectsCount.rows[0].count, 10) === 0) {
       const defaultProjects = [
         {
-          title: "Personal Portfolio & CMS",
-          description: "Full-stack portfolio with custom admin dashboard, PostgreSQL database, and dynamic project showcase.",
-          image_url: "/hero.jpg",
-          live_url: "https://example.com",
-          repo_url: "https://github.com",
-          tags: ["React", "Node.js", "Express", "PostgreSQL", "Tailwind CSS"],
+          title: "Road Accident Tracking System",
+          description:
+            "A road safety information management application designed to record, manage, and analyze road traffic accident data. The system supports the organization of accident reports and can provide tools for monitoring incident locations, reviewing accident histories, and generating statistical summaries to support road safety analysis.",
+          image_url:
+            "https://images.openai.com/static-rsc-4/ktt-gA2CUcBVXyfMr1WS5OxxTYmSQl10QQ86Pxs8NNYvhN2JvTjlNmEEYtbzwq_2wBtCgIKP4-lnnQ3jb_60gVn_1DVi7bE-EKhF-XXAOuG70GOQ7Tm83qIGYBA9m6etvpXAg5vK4CkHtUgwgSajcOzbAKJOxMkM67hbwWQafoZkB4tIGHSDlUxRjyLro3mj?purpose=fullsize",
+          live_url: "https://road-acident-tracking.onrender.com/",
+          repo_url: "https://github.com/smachewalene13-rgb/road-acident-tracking",
+          tags: ["python", "js", "html", "sql lite database"],
           featured: true,
           published: true,
           display_order: 1,
         },
         {
-          title: "E-Commerce REST API",
-          description: "Robust e-commerce backend with authentication, product catalog, cart management, and order processing.",
-          image_url: null,
-          live_url: null,
-          repo_url: "https://github.com",
-          tags: ["Node.js", "Express", "PostgreSQL", "JWT"],
+          title: "Hospital Management System",
+          description:
+            "A web-based healthcare management application designed to streamline hospital operations by organizing patient information, appointment scheduling, staff management, and administrative workflows. The system aims to improve data accessibility, reduce manual paperwork, and support efficient coordination among authorized hospital personnel through a centralized digital platform.",
+          image_url:
+            "https://images.openai.com/static-rsc-4/ADnLtYa7e8qBegTBcmZtX_AvZOrnaVi-yfZ985-8H9ccNhC0MT7aMd3e7kAwislwnmLdR_8HsGhRusX8fYDfYGpvwFq9Imw0G3mJKUgv34AKuh2icklObvJ-3fh1fCkZXpRH3CuC4DhUjzSe5eR6ORPwN8jPA0RPc-xxKX0G3MASxJWjLL9swGQBqbmvqkKh?purpose=fullsize",
+          live_url: "https://hospital-management-system-1-a5yc.onrender.com/pages/patients.html",
+          repo_url: "https://github.com/smachewalene13-rgb/hospital managment system",
+          tags: ["python", "js", "html", "sql lite database"],
           featured: true,
           published: true,
           display_order: 2,
         },
         {
-          title: "Interactive Task Dashboard",
-          description: "Kanban-style task management app with real-time state updates, drag-and-drop, and filtering.",
-          image_url: null,
-          live_url: "https://example.com",
-          repo_url: "https://github.com",
-          tags: ["React", "Tailwind CSS", "Framer Motion"],
+          title: "Expert System",
+          description:
+            "A knowledge-based decision support application designed to assist users in solving domain-specific problems through structured knowledge and logical inference rules. The system collects relevant information from users, evaluates the inputs against predefined rules, and generates appropriate conclusions or recommendations.",
+          image_url:
+            "https://images.openai.com/static-rsc-4/qi4n13Nd8Z6coIPsDHc39uojqYOJ5Nw_MiKl1V28SZHd-ZYDi2Jfzc12L5-lEN9sj6ieqZaAhrMtBxQkKIZtojr7B3tz3g8PDGkLxDIIpT0PyFKBHj_WD-uABBAikvqcunuqR3Ds3f0_wcx5V2ohvFXm7YcpwZCWRjteW0g-K5e6yP4EIaEur72PtaQSQ7Co?purpose=fullsize",
+          live_url: "https://medical-diagnosis-system-m3sh.onrender.com/dashboard",
+          repo_url: "https://github.com/smachewalene13-rgb/expert-system",
+          tags: ["python", "js", "html", "sql lite database"],
           featured: true,
           published: true,
           display_order: 3,
