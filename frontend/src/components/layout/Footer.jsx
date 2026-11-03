@@ -17,12 +17,12 @@ export default function Footer() {
             GitHub
           </a>
           <a
-            href="https://linkedin.com"
+            href="https://t.me/Simexsami"
             target="_blank"
             rel="noreferrer"
             className="hover:text-violet-400 transition-colors"
           >
-            LinkedIn
+            Telegram
           </a>
         </div>
       </div>
