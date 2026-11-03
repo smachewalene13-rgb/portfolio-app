@@ -4,9 +4,11 @@ import skillsApi from "./skillsApi";
 import experienceApi from "./experienceApi";
 import contactApi from "./contactApi";
 
+const LIVE_BACKEND_URL = "https://portfolio-backend-mkvd.onrender.com/api/v1";
+
 function getNormalizedApiUrl() {
   const envUrl = (import.meta.env.VITE_API_URL || "").trim();
-  if (envUrl) {
+  if (envUrl && !envUrl.includes("portfolio-app-a8yg")) {
     const clean = envUrl.replace(/\/+$/, "");
     if (!clean.endsWith("/api/v1") && !clean.endsWith("/api")) {
       return `${clean}/api/v1`;
@@ -19,7 +21,7 @@ function getNormalizedApiUrl() {
     !window.location.hostname.includes("localhost") &&
     !window.location.hostname.includes("127.0.0.1")
   ) {
-    return "https://portfolio-backend-mkvd.onrender.com/api/v1";
+    return LIVE_BACKEND_URL;
   }
   return "http://localhost:5000/api/v1";
 }
@@ -45,6 +47,25 @@ export async function request(path, options = {}) {
     throw new Error(
       "Unable to connect to the backend server. If using Render free tier, the server may be waking up (please wait ~30 seconds and refresh)."
     );
+  }
+
+  // If response is not ok and not already using LIVE_BACKEND_URL, try LIVE_BACKEND_URL failover
+  if (!res.ok && API_URL !== LIVE_BACKEND_URL) {
+    try {
+      const failoverRes = await fetch(`${LIVE_BACKEND_URL}${path}`, {
+        headers: {
+          "Content-Type": "application/json",
+          ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        },
+        ...options,
+      });
+      if (failoverRes.ok) {
+        if (failoverRes.status === 204) return null;
+        return failoverRes.json();
+      }
+    } catch {
+      // ignore failover error and proceed to normal error reporting
+    }
   }
 
   // If 404 and API_URL ends with /api/v1, try fallback without /v1 or direct path

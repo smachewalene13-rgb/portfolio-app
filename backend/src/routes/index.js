@@ -11,6 +11,24 @@ import { authenticate } from "../middleware/authenticate.js";
 
 const apiV1Router = Router();
 
+// API v1 root endpoint
+apiV1Router.get("/", (req, res) => {
+  res.json({
+    status: "ok",
+    version: "1.0.0",
+    message: "Portfolio REST API v1 is operational",
+    endpoints: {
+      projects: "/api/v1/projects",
+      skills: "/api/v1/skills",
+      profile: "/api/v1/profile",
+      experience: "/api/v1/experience",
+      education: "/api/v1/education",
+      contact: "/api/v1/contact",
+      health: "/api/v1/health",
+    },
+  });
+});
+
 // Health check endpoint
 apiV1Router.get("/health", (req, res) => {
   res.json({
