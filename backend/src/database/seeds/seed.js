@@ -108,19 +108,6 @@ export async function runSeeds() {
           published: true,
           display_order: 2,
         },
-        {
-          title: "Expert System",
-          description:
-            "A knowledge-based decision support application designed to assist users in solving domain-specific problems through structured knowledge and logical inference rules. The system collects relevant information from users, evaluates the inputs against predefined rules, and generates appropriate conclusions or recommendations.",
-          image_url:
-            "https://images.openai.com/static-rsc-4/qi4n13Nd8Z6coIPsDHc39uojqYOJ5Nw_MiKl1V28SZHd-ZYDi2Jfzc12L5-lEN9sj6ieqZaAhrMtBxQkKIZtojr7B3tz3g8PDGkLxDIIpT0PyFKBHj_WD-uABBAikvqcunuqR3Ds3f0_wcx5V2ohvFXm7YcpwZCWRjteW0g-K5e6yP4EIaEur72PtaQSQ7Co?purpose=fullsize",
-          live_url: "https://medical-diagnosis-system-m3sh.onrender.com/dashboard",
-          repo_url: "https://github.com/smachewalene13-rgb/expert-system",
-          tags: ["python", "js", "html", "sql lite database"],
-          featured: true,
-          published: true,
-          display_order: 3,
-        },
       ];
 
       for (const p of defaultProjects) {
