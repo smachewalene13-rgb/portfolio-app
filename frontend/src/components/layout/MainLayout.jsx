@@ -17,8 +17,8 @@ export default function MainLayout({ children }) {
               backgroundImage: `url('https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?auto=format&fit=crop&w=2000&q=80')`,
             }}
           />
-          {/* Subtle dark vignette overlay preserving crisp readability */}
-          <div className="absolute inset-0 bg-gradient-to-b from-[#0a0a0f]/80 via-[#0a0a0f]/60 to-[#0a0a0f]/85" />
+          {/* Subtle vignette overlay preserving crisp readability */}
+          <div className="fixed-bg-overlay absolute inset-0 bg-gradient-to-b from-[#0a0a0f]/80 via-[#0a0a0f]/60 to-[#0a0a0f]/85 transition-colors duration-500" />
         </div>
       )}
 

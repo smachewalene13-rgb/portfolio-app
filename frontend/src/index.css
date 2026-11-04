@@ -3,15 +3,181 @@
 :root {
   color-scheme: dark;
   font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+  --bg-main: #0a0a0f;
+  --text-main: #e5e7eb;
 }
 
 body {
   margin: 0;
   min-height: 100vh;
-  background: #0a0a0f;
-  color: #e5e7eb;
+  background-color: var(--bg-main);
+  color: var(--text-main);
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 html {
   scroll-behavior: smooth;
+}
+
+/* ==========================================================================
+   LIGHT THEME OVERRIDES & HIGH-CONTRAST LIGHT MODE
+   ========================================================================== */
+
+html.light,
+[data-theme="light"] {
+  color-scheme: light;
+  --bg-main: #f8fafc;
+  --text-main: #0f172a;
+}
+
+html.light body,
+[data-theme="light"] body {
+  background-color: #f8fafc !important;
+  color: #0f172a !important;
+}
+
+/* Background surfaces in light mode */
+html.light .bg-\[\#0a0a0f\],
+[data-theme="light"] .bg-\[\#0a0a0f\] {
+  background-color: #f8fafc !important;
+}
+
+html.light nav.bg-\[\#0a0a0f\]\/90,
+[data-theme="light"] nav.bg-\[\#0a0a0f\]\/90 {
+  background-color: rgba(255, 255, 255, 0.92) !important;
+  border-bottom-color: #e2e8f0 !important;
+}
+
+html.light footer.bg-\[\#0a0a0f\]\/50,
+[data-theme="light"] footer.bg-\[\#0a0a0f\]\/50 {
+  background-color: rgba(255, 255, 255, 0.8) !important;
+  border-top-color: #e2e8f0 !important;
+}
+
+/* Card surfaces */
+html.light .bg-\[\#13141f\],
+html.light .bg-\[\#181928\],
+html.light .bg-\[\#10111a\],
+html.light .bg-\[\#10111a\]\/95,
+html.light .bg-slate-900,
+html.light .bg-slate-900\/95,
+html.light .bg-slate-900\/90,
+[data-theme="light"] .bg-\[\#13141f\],
+[data-theme="light"] .bg-\[\#181928\],
+[data-theme="light"] .bg-\[\#10111a\],
+[data-theme="light"] .bg-\[\#10111a\]\/95,
+[data-theme="light"] .bg-slate-900,
+[data-theme="light"] .bg-slate-900\/95,
+[data-theme="light"] .bg-slate-900\/90 {
+  background-color: #ffffff !important;
+}
+
+html.light .bg-slate-800,
+html.light .bg-slate-800\/90,
+[data-theme="light"] .bg-slate-800,
+[data-theme="light"] .bg-slate-800\/90 {
+  background-color: #f1f5f9 !important;
+}
+
+/* Text colors in light mode */
+html.light .text-white,
+[data-theme="light"] .text-white {
+  color: #0f172a !important;
+}
+
+/* Retain white text for colored buttons & badges with gradient or solid purple/emerald backgrounds */
+html.light button.bg-gradient-to-r,
+html.light a.bg-gradient-to-r,
+html.light .bg-gradient-to-r,
+html.light .bg-gradient-to-r *,
+html.light .bg-violet-600,
+html.light .bg-violet-600 *,
+html.light .bg-emerald-600,
+html.light .bg-emerald-600 *,
+[data-theme="light"] button.bg-gradient-to-r,
+[data-theme="light"] a.bg-gradient-to-r,
+[data-theme="light"] .bg-gradient-to-r,
+[data-theme="light"] .bg-gradient-to-r *,
+[data-theme="light"] .bg-violet-600,
+[data-theme="light"] .bg-violet-600 *,
+[data-theme="light"] .bg-emerald-600,
+[data-theme="light"] .bg-emerald-600 * {
+  color: #ffffff !important;
+}
+
+html.light .text-gray-100,
+html.light .text-gray-200,
+html.light .text-slate-100,
+html.light .text-slate-200,
+[data-theme="light"] .text-gray-100,
+[data-theme="light"] .text-gray-200,
+[data-theme="light"] .text-slate-100,
+[data-theme="light"] .text-slate-200 {
+  color: #1e293b !important;
+}
+
+html.light .text-gray-300,
+html.light .text-gray-400,
+html.light .text-slate-300,
+html.light .text-slate-400,
+[data-theme="light"] .text-gray-300,
+[data-theme="light"] .text-gray-400,
+[data-theme="light"] .text-slate-300,
+[data-theme="light"] .text-slate-400 {
+  color: #475569 !important;
+}
+
+/* Borders in light mode */
+html.light .border-white\/10,
+html.light .border-white\/15,
+html.light .border-white\/20,
+html.light .border-white\/30,
+html.light .border-white\/35,
+html.light .border-slate-600,
+html.light .border-slate-700,
+[data-theme="light"] .border-white\/10,
+[data-theme="light"] .border-white\/15,
+[data-theme="light"] .border-white\/20,
+[data-theme="light"] .border-white\/30,
+[data-theme="light"] .border-white\/35,
+[data-theme="light"] .border-slate-600,
+[data-theme="light"] .border-slate-700 {
+  border-color: #cbd5e1 !important;
+}
+
+/* Shadows in light mode */
+html.light .shadow-2xl,
+html.light .shadow-xl,
+[data-theme="light"] .shadow-2xl,
+[data-theme="light"] .shadow-xl {
+  box-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.08), 0 8px 10px -6px rgba(15, 23, 42, 0.04) !important;
+}
+
+/* Inputs & Textareas in light mode */
+html.light input,
+html.light textarea,
+[data-theme="light"] input,
+[data-theme="light"] textarea {
+  background-color: #ffffff !important;
+  color: #0f172a !important;
+  border-color: #cbd5e1 !important;
+}
+
+html.light input::placeholder,
+html.light textarea::placeholder,
+[data-theme="light"] input::placeholder,
+[data-theme="light"] textarea::placeholder {
+  color: #94a3b8 !important;
+}
+
+/* Mobile Hamburger menu lines in light mode */
+html.light nav button span.bg-white,
+[data-theme="light"] nav button span.bg-white {
+  background-color: #0f172a !important;
+}
+
+/* Fixed background overlay in light mode */
+html.light .fixed-bg-overlay,
+[data-theme="light"] .fixed-bg-overlay {
+  background: linear-gradient(to bottom, rgba(248, 250, 252, 0.92), rgba(248, 250, 252, 0.82), rgba(248, 250, 252, 0.96)) !important;
 }

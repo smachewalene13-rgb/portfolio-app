@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { Link, NavLink, useNavigate, useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { useAuth } from "../../context/AuthContext";
+import ThemeToggle from "../common/ThemeToggle";
 
 const links = [
   { to: "/", label: "Home" },
@@ -61,6 +62,7 @@ export default function Navbar() {
           </ul>
 
           <div className="flex items-center gap-3 pl-4 border-l-2 border-white/15">
+            <ThemeToggle />
             {user ? (
               <div className="flex items-center gap-3">
                 <NavLink
@@ -95,11 +97,12 @@ export default function Navbar() {
         </div>
 
         {/* Mobile Three-Lines Hamburger Button (Visible on mobile/iPhone only) */}
-        <div className="flex items-center gap-3 md:hidden">
+        <div className="flex items-center gap-2.5 md:hidden">
+          <ThemeToggle />
           {!user && (
             <Link
               to="/contact"
-              className="inline-flex items-center text-xs font-bold px-3.5 py-1.5 rounded-lg bg-gradient-to-r from-violet-600 to-indigo-600 text-white shadow-md shadow-violet-600/30"
+              className="inline-flex items-center text-xs font-bold px-3 py-1.5 rounded-lg bg-gradient-to-r from-violet-600 to-indigo-600 text-white shadow-md shadow-violet-600/30"
             >
               Hire Me
             </Link>
@@ -197,6 +200,14 @@ export default function Navbar() {
                   </Link>
                 </div>
               )}
+
+              {/* Mobile Appearance Toggle Row */}
+              <div className="pt-4 border-t-2 border-white/10 flex items-center justify-between">
+                <span className="text-xs font-bold uppercase tracking-wider text-gray-300">
+                  Theme Appearance
+                </span>
+                <ThemeToggle />
+              </div>
             </div>
           </motion.div>
         )}
