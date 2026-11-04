@@ -70,29 +70,28 @@ export default function ContactForm() {
         {status === "success" ? (
           <motion.div
             key="success-card"
-            initial={{ opacity: 0, y: 15 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -15 }}
+            initial={{ opacity: 0, scale: 0.96 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.96 }}
             transition={{ duration: 0.3 }}
-            className="py-10 px-4 text-center space-y-5"
+            className="py-10 px-6 text-center space-y-5 rounded-2xl bg-[#181928] border-2 border-emerald-500/40"
           >
-            <div className="w-14 h-14 mx-auto rounded-full bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-emerald-400 font-bold text-xl">
+            <div className="w-16 h-16 mx-auto rounded-full bg-emerald-500/20 border-2 border-emerald-400 flex items-center justify-center text-emerald-300 font-extrabold text-2xl shadow-lg shadow-emerald-500/20">
               OK
             </div>
             <div>
-              <h3 className="text-xl font-bold text-white mb-2">
+              <h3 className="text-2xl font-extrabold text-white mb-2">
                 Message Sent Successfully
               </h3>
-              <p className="text-sm text-gray-400 max-w-md mx-auto leading-relaxed">
-                Thank you for getting in touch. Your message has been forwarded
-                directly to Simachew's inbox. You will receive a response within 24 hours.
+              <p className="text-sm text-gray-200 max-w-md mx-auto leading-relaxed">
+                Thank you for reaching out! Your message has been forwarded directly to Simachew's inbox. You will receive a response within 24 hours.
               </p>
             </div>
             <div className="pt-2">
               <button
                 type="button"
                 onClick={handleReset}
-                className="px-6 py-2.5 rounded-xl border border-white/10 hover:border-violet-500/50 hover:bg-violet-500/10 text-white text-xs font-semibold uppercase tracking-wider transition-all cursor-pointer"
+                className="px-8 py-3 rounded-xl bg-violet-600 hover:bg-violet-500 text-white font-bold text-xs uppercase tracking-wider shadow-lg shadow-violet-600/30 transition-all cursor-pointer"
               >
                 Send Another Message
               </button>
@@ -109,10 +108,10 @@ export default function ContactForm() {
           >
             {/* Quick Topic Selection */}
             <div>
-              <label className="block text-xs uppercase tracking-wider text-gray-400 font-semibold mb-2.5">
+              <label className="block text-xs uppercase tracking-wider text-violet-300 font-bold mb-3">
                 What would you like to discuss?
               </label>
-              <div className="flex flex-wrap gap-2">
+              <div className="flex flex-wrap gap-2.5">
                 {QUICK_TOPICS.map((topic) => {
                   const isActive = selectedTopic === topic;
                   return (
@@ -120,10 +119,10 @@ export default function ContactForm() {
                       key={topic}
                       type="button"
                       onClick={() => handleSelectTopic(topic)}
-                      className={`text-xs px-3.5 py-2 rounded-lg font-medium border transition-all cursor-pointer ${
+                      className={`text-xs px-4 py-2.5 rounded-xl font-bold border-2 transition-all cursor-pointer ${
                         isActive
-                          ? "bg-violet-500/20 border-violet-500 text-violet-200 shadow-sm shadow-violet-500/20"
-                          : "border-white/10 bg-white/[0.02] text-gray-400 hover:border-violet-500/40 hover:text-white hover:bg-white/[0.04]"
+                          ? "bg-violet-600 border-violet-400 text-white shadow-lg shadow-violet-600/30 scale-105"
+                          : "bg-[#181928] border-white/20 text-gray-200 hover:border-violet-400 hover:text-white hover:bg-violet-600/10"
                       }`}
                     >
                       {topic}
@@ -145,9 +144,9 @@ export default function ContactForm() {
             )}
 
             {/* Two-column responsive inputs: Name & Email */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
               <div>
-                <label className="block text-xs uppercase tracking-wider text-gray-300 font-semibold mb-2">
+                <label className="block text-xs uppercase tracking-wider text-gray-200 font-bold mb-2">
                   Full Name <span className="text-violet-400">*</span>
                 </label>
                 <input
@@ -157,12 +156,12 @@ export default function ContactForm() {
                   onChange={handleChange}
                   required
                   placeholder="e.g. Alex Johnson"
-                  className="w-full px-4 py-3 rounded-xl bg-white/[0.03] border border-white/10 text-white placeholder-gray-500 text-sm focus:border-violet-500 focus:bg-white/[0.06] focus:outline-none focus:ring-1 focus:ring-violet-500 transition-all"
+                  className="w-full px-4 py-3.5 rounded-xl bg-[#181928] border-2 border-white/20 text-white placeholder-gray-400 text-sm font-medium hover:border-white/35 focus:border-violet-400 focus:bg-[#1d1f33] focus:ring-4 focus:ring-violet-500/20 focus:outline-none transition-all shadow-inner"
                 />
               </div>
 
               <div>
-                <label className="block text-xs uppercase tracking-wider text-gray-300 font-semibold mb-2">
+                <label className="block text-xs uppercase tracking-wider text-gray-200 font-bold mb-2">
                   Email Address <span className="text-violet-400">*</span>
                 </label>
                 <input
@@ -172,14 +171,14 @@ export default function ContactForm() {
                   onChange={handleChange}
                   required
                   placeholder="e.g. alex@company.com"
-                  className="w-full px-4 py-3 rounded-xl bg-white/[0.03] border border-white/10 text-white placeholder-gray-500 text-sm focus:border-violet-500 focus:bg-white/[0.06] focus:outline-none focus:ring-1 focus:ring-violet-500 transition-all"
+                  className="w-full px-4 py-3.5 rounded-xl bg-[#181928] border-2 border-white/20 text-white placeholder-gray-400 text-sm font-medium hover:border-white/35 focus:border-violet-400 focus:bg-[#1d1f33] focus:ring-4 focus:ring-violet-500/20 focus:outline-none transition-all shadow-inner"
                 />
               </div>
             </div>
 
             {/* Subject */}
             <div>
-              <label className="block text-xs uppercase tracking-wider text-gray-300 font-semibold mb-2">
+              <label className="block text-xs uppercase tracking-wider text-gray-200 font-bold mb-2">
                 Subject
               </label>
               <input
@@ -187,14 +186,14 @@ export default function ContactForm() {
                 name="subject"
                 value={form.subject}
                 onChange={handleChange}
-                placeholder="Choose a topic above or type a subject..."
-                className="w-full px-4 py-3 rounded-xl bg-white/[0.03] border border-white/10 text-white placeholder-gray-500 text-sm focus:border-violet-500 focus:bg-white/[0.06] focus:outline-none focus:ring-1 focus:ring-violet-500 transition-all"
+                placeholder="Choose a topic above or type a custom subject..."
+                className="w-full px-4 py-3.5 rounded-xl bg-[#181928] border-2 border-white/20 text-white placeholder-gray-400 text-sm font-medium hover:border-white/35 focus:border-violet-400 focus:bg-[#1d1f33] focus:ring-4 focus:ring-violet-500/20 focus:outline-none transition-all shadow-inner"
               />
             </div>
 
             {/* Message Textarea */}
             <div>
-              <label className="block text-xs uppercase tracking-wider text-gray-300 font-semibold mb-2">
+              <label className="block text-xs uppercase tracking-wider text-gray-200 font-bold mb-2">
                 Message <span className="text-violet-400">*</span>
               </label>
               <textarea
@@ -204,7 +203,7 @@ export default function ContactForm() {
                 required
                 rows={5}
                 placeholder="Share project scope, role requirements, timeline, or any questions..."
-                className="w-full px-4 py-3 rounded-xl bg-white/[0.03] border border-white/10 text-white placeholder-gray-500 text-sm focus:border-violet-500 focus:bg-white/[0.06] focus:outline-none focus:ring-1 focus:ring-violet-500 transition-all resize-none leading-relaxed"
+                className="w-full px-4 py-3.5 rounded-xl bg-[#181928] border-2 border-white/20 text-white placeholder-gray-400 text-sm font-medium hover:border-white/35 focus:border-violet-400 focus:bg-[#1d1f33] focus:ring-4 focus:ring-violet-500/20 focus:outline-none transition-all resize-none leading-relaxed shadow-inner"
               />
             </div>
 
@@ -213,7 +212,7 @@ export default function ContactForm() {
               <button
                 type="submit"
                 disabled={status === "sending"}
-                className="w-full sm:w-auto px-8 py-3.5 rounded-xl bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-500 hover:to-indigo-500 text-white font-semibold text-sm shadow-lg shadow-violet-500/25 disabled:opacity-50 disabled:cursor-not-allowed transition-all cursor-pointer"
+                className="w-full sm:w-auto px-10 py-4 rounded-xl bg-gradient-to-r from-violet-600 via-purple-600 to-indigo-600 hover:from-violet-500 hover:to-indigo-500 text-white font-bold text-sm tracking-wide shadow-xl shadow-violet-600/30 disabled:opacity-50 disabled:cursor-not-allowed transition-all cursor-pointer hover:scale-[1.02]"
               >
                 {status === "sending" ? "Delivering Message..." : "Send Message"}
               </button>
