@@ -85,7 +85,7 @@ export async function runSeeds() {
         {
           title: "Road Accident Tracking System",
           description:
-            "A road safety information management application designed to record, manage, and analyze road traffic accident data. The system supports the organization of accident reports and can provide tools for monitoring incident locations, reviewing accident histories, and generating statistical summaries to support road safety analysis.",
+            "A road safety information management application designed to record, manage, and analyze road traffic accident data.",
           image_url:
             "https://images.openai.com/static-rsc-4/ktt-gA2CUcBVXyfMr1WS5OxxTYmSQl10QQ86Pxs8NNYvhN2JvTjlNmEEYtbzwq_2wBtCgIKP4-lnnQ3jb_60gVn_1DVi7bE-EKhF-XXAOuG70GOQ7Tm83qIGYBA9m6etvpXAg5vK4CkHtUgwgSajcOzbAKJOxMkM67hbwWQafoZkB4tIGHSDlUxRjyLro3mj?purpose=fullsize",
           live_url: "https://road-acident-tracking-frontend.vercel.app/",
@@ -98,7 +98,7 @@ export async function runSeeds() {
         {
           title: "Hospital Management System",
           description:
-            "A web-based healthcare management application designed to streamline hospital operations by organizing patient information, appointment scheduling, staff management, and administrative workflows. The system aims to improve data accessibility, reduce manual paperwork, and support efficient coordination among authorized hospital personnel through a centralized digital platform.",
+            "A web-based healthcare management application designed to streamline hospital operations by organizing patient information, appointment scheduling, staff management, and administrative workflows.",
           image_url:
             "https://images.openai.com/static-rsc-4/ADnLtYa7e8qBegTBcmZtX_AvZOrnaVi-yfZ985-8H9ccNhC0MT7aMd3e7kAwislwnmLdR_8HsGhRusX8fYDfYGpvwFq9Imw0G3mJKUgv34AKuh2icklObvJ-3fh1fCkZXpRH3CuC4DhUjzSe5eR6ORPwN8jPA0RPc-xxKX0G3MASxJWjLL9swGQBqbmvqkKh?purpose=fullsize",
           live_url: "https://hospital-management-system-frontend-six-sandy.vercel.app/",
