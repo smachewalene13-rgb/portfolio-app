@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import useProjects from "../hooks/useProjects";
+import { useProjects } from "../hooks/useProjects";
 import { useAuth } from "../context/AuthContext";
 import projectsApi from "../api/projectsApi";
 import ProjectGrid from "../components/projects/ProjectGrid";
@@ -59,12 +59,12 @@ export default function Projects() {
 
   const handleAuthSubmit = async (e) => {
     e.preventDefault();
-    setAuthLoading(true);
     setAuthError("");
+    setAuthLoading(true);
     try {
       await login(adminEmail, adminPassword);
     } catch (err) {
-      setAuthError(err.message || "Failed to sign in. Please verify your credentials.");
+      setAuthError(err.message || "Invalid administrator credentials");
     } finally {
       setAuthLoading(false);
     }
@@ -72,17 +72,8 @@ export default function Projects() {
 
   const handleProjectSubmit = async (e) => {
     e.preventDefault();
-    if (!form.title.trim()) {
-      setFormError("Project title is required");
-      return;
-    }
-    if (!form.description.trim()) {
-      setFormError("Project description is required");
-      return;
-    }
-
-    setSaving(true);
     setFormError("");
+    setSaving(true);
 
     try {
       const payload = {
@@ -92,20 +83,17 @@ export default function Projects() {
         liveUrl: form.liveUrl.trim() || null,
         repoUrl: form.repoUrl.trim() || null,
         tags: form.tags
-          ? form.tags
-              .split(",")
-              .map((t) => t.trim())
-              .filter(Boolean)
+          ? form.tags.split(",").map((t) => t.trim().toLowerCase()).filter(Boolean)
           : [],
-        featured: form.featured,
+        featured: Boolean(form.featured),
         published: true,
       };
 
-      await projectsApi.createProject(payload);
+      await projectApi.createProject(payload);
       await refreshProjects();
-      setIsModalOpen(false);
-      setSuccessToast(`Project "${form.title}" was added successfully!`);
-      setTimeout(() => setSuccessToast(""), 4000);
+      handleCloseModal();
+      setSuccessToast(`Project "${form.title}" published successfully to your portfolio!`);
+      setTimeout(() => setSuccessToast(""), 6000);
     } catch (err) {
       setFormError(err.message || "Failed to create project");
     } finally {
@@ -115,268 +103,281 @@ export default function Projects() {
 
   return (
     <PageTransition>
-      <div className="max-w-6xl mx-auto px-6 py-16">
-        {/* Header with Title and Add New Project Button */}
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-10">
-          <div>
-            <h1 className="text-3xl md:text-4xl font-bold tracking-tight text-white mb-2">
-              Featured Projects
-            </h1>
-            <p className="text-gray-400 text-sm md:text-base">
-              Explore recent full-stack applications, developer tools, and client projects.
+      <div className="relative overflow-hidden min-h-[calc(100vh-80px)]">
+        {/* Subtle Ambient background glows */}
+        <div className="absolute top-24 left-1/3 -translate-x-1/2 w-[550px] h-[550px] bg-violet-600/15 rounded-full blur-[140px] pointer-events-none" />
+        <div className="absolute top-2/3 right-10 w-[450px] h-[450px] bg-indigo-600/15 rounded-full blur-[140px] pointer-events-none" />
+
+        <div className="relative max-w-6xl mx-auto px-4 sm:px-6 py-16">
+          {/* Header with Title and Add New Project Button */}
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6 mb-12">
+            <div>
+              <span className="text-xs font-bold uppercase tracking-widest text-violet-300 bg-violet-500/15 border-2 border-violet-400/80 px-4 py-1.5 rounded-full inline-block mb-3 shadow-md shadow-violet-500/20">
+                Work Catalog
+              </span>
+              <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight text-white mb-2">
+                Featured Projects
+              </h1>
+              <p className="text-gray-200 text-sm sm:text-base font-normal">
+                Explore recent full-stack applications, developer tools, and client projects.
+              </p>
+            </div>
+
+            <button
+              onClick={handleOpenModal}
+              className="shrink-0 px-7 py-3.5 rounded-xl bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-500 hover:to-indigo-500 text-white font-bold text-sm shadow-xl shadow-violet-600/30 transition-all hover:scale-105 cursor-pointer self-start sm:self-auto"
+            >
+              Add New Project
+            </button>
+          </div>
+
+          {/* Success Alert Banner with High Contrast */}
+          {successToast && (
+            <div className="mb-10 p-5 rounded-2xl bg-emerald-500/15 border-2 border-emerald-400 text-emerald-200 text-sm font-bold shadow-lg shadow-emerald-500/20">
+              {successToast}
+            </div>
+          )}
+
+          {!loading && !error && projects.length > 0 && (
+            <ProjectFilter
+              tags={allTags}
+              activeFilter={filter}
+              onSelectFilter={setFilter}
+            />
+          )}
+
+          {loading && <Loader label="Loading projects catalog..." />}
+          {error && <ErrorMessage message={error} />}
+
+          {!loading && !error && visible.length === 0 && (
+            <p className="text-gray-300 py-12 text-center text-base font-medium">
+              No projects match the selected filter.
             </p>
-          </div>
+          )}
 
-          <button
-            onClick={handleOpenModal}
-            className="shrink-0 px-5 py-2.5 rounded-xl bg-violet-500 hover:bg-violet-600 text-white font-semibold text-sm shadow-lg shadow-violet-500/25 transition-all hover:scale-105 cursor-pointer self-start sm:self-auto"
-          >
-            Add New Project
-          </button>
-        </div>
+          {!loading && !error && visible.length > 0 && (
+            <ProjectGrid projects={visible} />
+          )}
 
-        {/* Success Alert Banner */}
-        {successToast && (
-          <div className="mb-8 p-4 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-300 text-sm font-medium">
-            {successToast}
-          </div>
-        )}
+          {/* Add Project Modal with High Visibility */}
+          {isModalOpen && (
+            <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md overflow-y-auto">
+              <div className="relative w-full max-w-xl rounded-3xl border-2 border-white/20 bg-[#13141f] p-6 sm:p-8 shadow-2xl shadow-black/95 my-8 overflow-hidden">
+                <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-violet-500 via-purple-500 to-indigo-500" />
 
-        {!loading && !error && projects.length > 0 && (
-          <ProjectFilter
-            tags={allTags}
-            activeFilter={filter}
-            onSelectFilter={setFilter}
-          />
-        )}
-
-        {loading && <Loader label="Loading projects catalog..." />}
-        {error && <ErrorMessage message={error} />}
-
-        {!loading && !error && visible.length === 0 && (
-          <p className="text-gray-500 py-8">No projects match the selected filter.</p>
-        )}
-
-        {!loading && !error && visible.length > 0 && (
-          <ProjectGrid projects={visible} />
-        )}
-
-        {/* Add Project Modal */}
-        {isModalOpen && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/75 backdrop-blur-sm overflow-y-auto">
-            <div className="relative w-full max-w-xl rounded-2xl border border-white/10 bg-[#0e0e17] p-6 sm:p-8 shadow-2xl my-8">
-              {!user ? (
-                /* Admin Login Prompt */
-                <div>
-                  <h2 className="text-xl font-bold text-white mb-2">
-                    Admin Sign In
-                  </h2>
-                  <p className="text-xs text-gray-400 mb-6">
-                    Please sign in with your administrator account to create and publish new projects.
-                  </p>
-
-                  {authError && (
-                    <div className="mb-5">
-                      <ErrorMessage message={authError} />
-                    </div>
-                  )}
-
-                  <form onSubmit={handleAuthSubmit} className="space-y-4">
-                    <div>
-                      <label className="block text-xs uppercase tracking-wider text-gray-400 font-medium mb-1.5">
-                        Admin Email
-                      </label>
-                      <input
-                        type="email"
-                        required
-                        value={adminEmail}
-                        onChange={(e) => setAdminEmail(e.target.value)}
-                        className="w-full px-4 py-2.5 rounded-lg bg-white/[0.04] border border-white/10 text-white text-sm focus:border-violet-500 focus:outline-none"
-                      />
-                    </div>
-
-                    <div>
-                      <label className="block text-xs uppercase tracking-wider text-gray-400 font-medium mb-1.5">
-                        Admin Password
-                      </label>
-                      <input
-                        type="password"
-                        required
-                        value={adminPassword}
-                        onChange={(e) => setAdminPassword(e.target.value)}
-                        placeholder="••••••••"
-                        className="w-full px-4 py-2.5 rounded-lg bg-white/[0.04] border border-white/10 text-white text-sm focus:border-violet-500 focus:outline-none"
-                      />
-                    </div>
-
-                    <div className="flex items-center justify-end gap-3 pt-3">
-                      <button
-                        type="button"
-                        onClick={handleCloseModal}
-                        className="px-4 py-2 rounded-lg border border-white/10 hover:bg-white/5 text-sm text-gray-300 transition-colors cursor-pointer"
-                      >
-                        Cancel
-                      </button>
-                      <button
-                        type="submit"
-                        disabled={authLoading}
-                        className="px-5 py-2 rounded-lg bg-violet-500 hover:bg-violet-600 text-white font-semibold text-sm transition-all cursor-pointer disabled:opacity-50"
-                      >
-                        {authLoading ? "Signing In..." : "Sign In & Continue"}
-                      </button>
-                    </div>
-                  </form>
-                </div>
-              ) : (
-                /* Project Creation Form */
-                <div>
-                  <div className="flex items-center justify-between mb-2">
-                    <h2 className="text-xl font-bold text-white">
-                      Add New Project
+                {!user ? (
+                  /* Admin Login Prompt */
+                  <div className="pt-2">
+                    <h2 className="text-2xl font-extrabold text-white mb-2">
+                      Admin Sign In
                     </h2>
-                    <span className="text-xs text-violet-400 font-medium bg-violet-500/10 px-2.5 py-1 rounded-full border border-violet-500/20">
-                      Signed in as Admin
-                    </span>
-                  </div>
-                  <p className="text-xs text-gray-400 mb-6">
-                    Enter the project specifications below to publish it to your portfolio.
-                  </p>
+                    <p className="text-xs text-gray-300 font-medium mb-6">
+                      Please sign in with your administrator account to create and publish new projects.
+                    </p>
 
-                  {formError && (
-                    <div className="mb-5">
-                      <ErrorMessage message={formError} />
-                    </div>
-                  )}
+                    {authError && (
+                      <div className="mb-5">
+                        <ErrorMessage message={authError} />
+                      </div>
+                    )}
 
-                  <form onSubmit={handleProjectSubmit} className="space-y-4">
-                    <div>
-                      <label className="block text-xs uppercase tracking-wider text-gray-400 font-medium mb-1.5">
-                        Project Title *
-                      </label>
-                      <input
-                        type="text"
-                        required
-                        value={form.title}
-                        onChange={(e) => setForm({ ...form, title: e.target.value })}
-                        placeholder="e.g. Distributed Task Queue"
-                        className="w-full px-4 py-2.5 rounded-lg bg-white/[0.04] border border-white/10 text-white text-sm focus:border-violet-500 focus:outline-none"
-                      />
-                    </div>
-
-                    <div>
-                      <label className="block text-xs uppercase tracking-wider text-gray-400 font-medium mb-1.5">
-                        Description *
-                      </label>
-                      <textarea
-                        required
-                        rows={3}
-                        value={form.description}
-                        onChange={(e) => setForm({ ...form, description: e.target.value })}
-                        placeholder="Describe the application, architecture, and problem solved..."
-                        className="w-full px-4 py-2.5 rounded-lg bg-white/[0.04] border border-white/10 text-white text-sm focus:border-violet-500 focus:outline-none resize-none"
-                      />
-                    </div>
-
-                    <div className="grid sm:grid-cols-2 gap-4">
+                    <form onSubmit={handleAuthSubmit} className="space-y-4">
                       <div>
-                        <label className="block text-xs uppercase tracking-wider text-gray-400 font-medium mb-1.5">
-                          Image URL (Optional)
+                        <label className="block text-xs uppercase tracking-wider text-gray-200 font-bold mb-2">
+                          Admin Email
                         </label>
                         <input
-                          type="text"
-                          value={form.imageUrl}
-                          onChange={(e) => setForm({ ...form, imageUrl: e.target.value })}
-                          placeholder="e.g. /hero.jpg or https://..."
-                          className="w-full px-4 py-2.5 rounded-lg bg-white/[0.04] border border-white/10 text-white text-sm focus:border-violet-500 focus:outline-none"
+                          type="email"
+                          required
+                          value={adminEmail}
+                          onChange={(e) => setAdminEmail(e.target.value)}
+                          className="w-full px-4 py-3 rounded-xl bg-[#181928] border-2 border-white/20 text-white placeholder-gray-400 text-sm font-medium hover:border-white/35 focus:border-violet-400 focus:bg-[#1d1f33] focus:ring-4 focus:ring-violet-500/20 focus:outline-none transition-all shadow-inner"
                         />
                       </div>
 
                       <div>
-                        <label className="block text-xs uppercase tracking-wider text-gray-400 font-medium mb-1.5">
-                          Tech Tags (comma-separated)
+                        <label className="block text-xs uppercase tracking-wider text-gray-200 font-bold mb-2">
+                          Admin Password
                         </label>
                         <input
-                          type="text"
-                          value={form.tags}
-                          onChange={(e) => setForm({ ...form, tags: e.target.value })}
-                          placeholder="React, Node.js, PostgreSQL"
-                          className="w-full px-4 py-2.5 rounded-lg bg-white/[0.04] border border-white/10 text-white text-sm focus:border-violet-500 focus:outline-none"
-                        />
-                      </div>
-                    </div>
-
-                    <div className="grid sm:grid-cols-2 gap-4">
-                      <div>
-                        <label className="block text-xs uppercase tracking-wider text-gray-400 font-medium mb-1.5">
-                          Live Demo URL
-                        </label>
-                        <input
-                          type="url"
-                          value={form.liveUrl}
-                          onChange={(e) => setForm({ ...form, liveUrl: e.target.value })}
-                          placeholder="https://example.com"
-                          className="w-full px-4 py-2.5 rounded-lg bg-white/[0.04] border border-white/10 text-white text-sm focus:border-violet-500 focus:outline-none"
+                          type="password"
+                          required
+                          value={adminPassword}
+                          onChange={(e) => setAdminPassword(e.target.value)}
+                          placeholder="••••••••"
+                          className="w-full px-4 py-3 rounded-xl bg-[#181928] border-2 border-white/20 text-white placeholder-gray-400 text-sm font-medium hover:border-white/35 focus:border-violet-400 focus:bg-[#1d1f33] focus:ring-4 focus:ring-violet-500/20 focus:outline-none transition-all shadow-inner"
                         />
                       </div>
 
-                      <div>
-                        <label className="block text-xs uppercase tracking-wider text-gray-400 font-medium mb-1.5">
-                          GitHub Repo URL
-                        </label>
-                        <input
-                          type="url"
-                          value={form.repoUrl}
-                          onChange={(e) => setForm({ ...form, repoUrl: e.target.value })}
-                          placeholder="https://github.com/..."
-                          className="w-full px-4 py-2.5 rounded-lg bg-white/[0.04] border border-white/10 text-white text-sm focus:border-violet-500 focus:outline-none"
-                        />
-                      </div>
-                    </div>
-
-                    <div className="flex items-center gap-2 pt-1">
-                      <input
-                        type="checkbox"
-                        id="featured"
-                        checked={form.featured}
-                        onChange={(e) => setForm({ ...form, featured: e.target.checked })}
-                        className="rounded border-white/20 bg-white/5 text-violet-500 focus:ring-violet-500 cursor-pointer"
-                      />
-                      <label htmlFor="featured" className="text-sm text-gray-300 cursor-pointer">
-                        Feature this project on homepage
-                      </label>
-                    </div>
-
-                    <div className="flex items-center justify-between pt-4 border-t border-white/10">
-                      <Link
-                        to="/admin"
-                        className="text-xs text-gray-400 hover:text-violet-300 transition-colors"
-                      >
-                        Open Full Admin Dashboard
-                      </Link>
-
-                      <div className="flex gap-3">
+                      <div className="flex items-center justify-end gap-3 pt-4 border-t border-white/10">
                         <button
                           type="button"
                           onClick={handleCloseModal}
-                          className="px-4 py-2 rounded-lg border border-white/10 hover:bg-white/5 text-sm text-gray-300 transition-colors cursor-pointer"
+                          className="px-5 py-2.5 rounded-xl border-2 border-white/20 bg-[#181928] hover:border-white text-gray-200 hover:text-white font-bold text-xs transition-all cursor-pointer"
                         >
                           Cancel
                         </button>
                         <button
                           type="submit"
-                          disabled={saving}
-                          className="px-5 py-2 rounded-lg bg-violet-500 hover:bg-violet-600 text-white font-semibold text-sm shadow-md shadow-violet-500/20 transition-all cursor-pointer disabled:opacity-50"
+                          disabled={authLoading}
+                          className="px-6 py-2.5 rounded-xl bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-500 hover:to-indigo-500 text-white font-bold text-xs shadow-lg shadow-violet-600/30 transition-all cursor-pointer disabled:opacity-50"
                         >
-                          {saving ? "Saving Project..." : "Save Project"}
+                          {authLoading ? "Signing In..." : "Sign In & Continue"}
                         </button>
                       </div>
+                    </form>
+                  </div>
+                ) : (
+                  /* Project Creation Form */
+                  <div className="pt-2">
+                    <div className="flex items-center justify-between mb-2">
+                      <h2 className="text-2xl font-extrabold text-white">
+                        Add New Project
+                      </h2>
+                      <span className="text-xs text-violet-300 font-bold bg-violet-500/20 px-3 py-1 rounded-full border border-violet-400/50">
+                        Signed in as Admin
+                      </span>
                     </div>
-                  </form>
-                </div>
-              )}
+                    <p className="text-xs text-gray-300 font-medium mb-6">
+                      Enter the project specifications below to publish it directly to your live portfolio.
+                    </p>
+
+                    {formError && (
+                      <div className="mb-5">
+                        <ErrorMessage message={formError} />
+                      </div>
+                    )}
+
+                    <form onSubmit={handleProjectSubmit} className="space-y-4">
+                      <div>
+                        <label className="block text-xs uppercase tracking-wider text-gray-200 font-bold mb-2">
+                          Project Title *
+                        </label>
+                        <input
+                          type="text"
+                          required
+                          value={form.title}
+                          onChange={(e) => setForm({ ...form, title: e.target.value })}
+                          placeholder="e.g. Distributed Task Queue"
+                          className="w-full px-4 py-3 rounded-xl bg-[#181928] border-2 border-white/20 text-white placeholder-gray-400 text-sm font-medium hover:border-white/35 focus:border-violet-400 focus:bg-[#1d1f33] focus:ring-4 focus:ring-violet-500/20 focus:outline-none transition-all shadow-inner"
+                        />
+                      </div>
+
+                      <div>
+                        <label className="block text-xs uppercase tracking-wider text-gray-200 font-bold mb-2">
+                          Description *
+                        </label>
+                        <textarea
+                          required
+                          rows={3}
+                          value={form.description}
+                          onChange={(e) => setForm({ ...form, description: e.target.value })}
+                          placeholder="Describe the application, architecture, and problem solved..."
+                          className="w-full px-4 py-3 rounded-xl bg-[#181928] border-2 border-white/20 text-white placeholder-gray-400 text-sm font-medium hover:border-white/35 focus:border-violet-400 focus:bg-[#1d1f33] focus:ring-4 focus:ring-violet-500/20 focus:outline-none transition-all resize-none shadow-inner"
+                        />
+                      </div>
+
+                      <div className="grid sm:grid-cols-2 gap-4">
+                        <div>
+                          <label className="block text-xs uppercase tracking-wider text-gray-200 font-bold mb-2">
+                            Image URL (Optional)
+                          </label>
+                          <input
+                            type="text"
+                            value={form.imageUrl}
+                            onChange={(e) => setForm({ ...form, imageUrl: e.target.value })}
+                            placeholder="e.g. /hero.jpg or https://..."
+                            className="w-full px-4 py-3 rounded-xl bg-[#181928] border-2 border-white/20 text-white placeholder-gray-400 text-sm font-medium hover:border-white/35 focus:border-violet-400 focus:bg-[#1d1f33] focus:ring-4 focus:ring-violet-500/20 focus:outline-none transition-all shadow-inner"
+                          />
+                        </div>
+
+                        <div>
+                          <label className="block text-xs uppercase tracking-wider text-gray-200 font-bold mb-2">
+                            Tech Tags (comma-separated)
+                          </label>
+                          <input
+                            type="text"
+                            value={form.tags}
+                            onChange={(e) => setForm({ ...form, tags: e.target.value })}
+                            placeholder="React, Node.js, PostgreSQL"
+                            className="w-full px-4 py-3 rounded-xl bg-[#181928] border-2 border-white/20 text-white placeholder-gray-400 text-sm font-medium hover:border-white/35 focus:border-violet-400 focus:bg-[#1d1f33] focus:ring-4 focus:ring-violet-500/20 focus:outline-none transition-all shadow-inner"
+                          />
+                        </div>
+                      </div>
+
+                      <div className="grid sm:grid-cols-2 gap-4">
+                        <div>
+                          <label className="block text-xs uppercase tracking-wider text-gray-200 font-bold mb-2">
+                            Live Demo URL
+                          </label>
+                          <input
+                            type="url"
+                            value={form.liveUrl}
+                            onChange={(e) => setForm({ ...form, liveUrl: e.target.value })}
+                            placeholder="https://example.com"
+                            className="w-full px-4 py-3 rounded-xl bg-[#181928] border-2 border-white/20 text-white placeholder-gray-400 text-sm font-medium hover:border-white/35 focus:border-violet-400 focus:bg-[#1d1f33] focus:ring-4 focus:ring-violet-500/20 focus:outline-none transition-all shadow-inner"
+                          />
+                        </div>
+
+                        <div>
+                          <label className="block text-xs uppercase tracking-wider text-gray-200 font-bold mb-2">
+                            GitHub Repo URL
+                          </label>
+                          <input
+                            type="url"
+                            value={form.repoUrl}
+                            onChange={(e) => setForm({ ...form, repoUrl: e.target.value })}
+                            placeholder="https://github.com/..."
+                            className="w-full px-4 py-3 rounded-xl bg-[#181928] border-2 border-white/20 text-white placeholder-gray-400 text-sm font-medium hover:border-white/35 focus:border-violet-400 focus:bg-[#1d1f33] focus:ring-4 focus:ring-violet-500/20 focus:outline-none transition-all shadow-inner"
+                          />
+                        </div>
+                      </div>
+
+                      <div className="flex items-center gap-2.5 pt-1">
+                        <input
+                          type="checkbox"
+                          id="featured"
+                          checked={form.featured}
+                          onChange={(e) => setForm({ ...form, featured: e.target.checked })}
+                          className="w-4 h-4 rounded border-white/20 bg-[#181928] text-violet-600 focus:ring-violet-500 cursor-pointer"
+                        />
+                        <label htmlFor="featured" className="text-sm font-bold text-gray-200 cursor-pointer">
+                          Feature this project on homepage
+                        </label>
+                      </div>
+
+                      <div className="flex items-center justify-between pt-5 border-t border-white/10">
+                        <Link
+                          to="/admin"
+                          className="text-xs font-bold text-violet-300 hover:text-white transition-colors"
+                        >
+                          Open Admin Dashboard
+                        </Link>
+
+                        <div className="flex gap-3">
+                          <button
+                            type="button"
+                            onClick={handleCloseModal}
+                            className="px-5 py-2.5 rounded-xl border-2 border-white/20 bg-[#181928] hover:border-white text-gray-200 hover:text-white font-bold text-xs transition-all cursor-pointer"
+                          >
+                            Cancel
+                          </button>
+                          <button
+                            type="submit"
+                            disabled={saving}
+                            className="px-6 py-2.5 rounded-xl bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-500 hover:to-indigo-500 text-white font-bold text-xs shadow-xl shadow-violet-600/30 transition-all cursor-pointer disabled:opacity-50"
+                          >
+                            {saving ? "Saving Project..." : "Save Project"}
+                          </button>
+                        </div>
+                      </div>
+                    </form>
+                  </div>
+                )}
+              </div>
             </div>
-          </div>
-        )}
+          )}
+        </div>
       </div>
     </PageTransition>
   );
