@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import profileApi from "../../api/profileApi";
 import Loader from "../../components/common/Loader";
-import Button from "../../components/common/Button";
 
 export default function ManageProfile() {
   const [profile, setProfile] = useState({
@@ -46,6 +45,7 @@ export default function ManageProfile() {
       const updated = await profileApi.updateProfile(profile);
       setProfile(updated);
       setStatus({ type: "success", message: "Profile updated successfully!" });
+      setTimeout(() => setStatus({ type: "", message: "" }), 5000);
     } catch (err) {
       setStatus({ type: "error", message: err.message });
     } finally {
@@ -53,23 +53,23 @@ export default function ManageProfile() {
     }
   };
 
-  if (loading) return <Loader label="Loading profile..." />;
+  if (loading) return <Loader label="Loading profile data..." />;
 
   return (
-    <div className="max-w-3xl">
-      <div className="mb-6">
-        <h2 className="text-xl font-semibold mb-1">Manage Profile</h2>
-        <p className="text-sm text-gray-400">
-          Update your public profile, hero summary, and social links.
+    <div className="max-w-4xl">
+      <div className="mb-8">
+        <h2 className="text-2xl font-extrabold text-white">Manage Profile</h2>
+        <p className="text-sm text-gray-300 font-medium">
+          Update your public portfolio info, title, bio summary, and external links.
         </p>
       </div>
 
       {status.message && (
         <div
-          className={`mb-6 p-4 rounded-lg text-sm ${
+          className={`mb-8 p-4 rounded-2xl text-sm font-bold border-2 ${
             status.type === "success"
-              ? "bg-green-500/10 border border-green-500/30 text-green-400"
-              : "bg-red-500/10 border border-red-500/30 text-red-400"
+              ? "bg-emerald-500/15 border-emerald-400 text-emerald-200 shadow-md shadow-emerald-500/20"
+              : "bg-red-500/15 border-red-400 text-red-200 shadow-md shadow-red-500/20"
           }`}
         >
           {status.message}
@@ -79,8 +79,8 @@ export default function ManageProfile() {
       <form onSubmit={handleSubmit} className="space-y-6">
         <div className="grid md:grid-cols-2 gap-6">
           <div>
-            <label className="block text-sm font-medium mb-2 text-gray-300">
-              Full Name
+            <label className="block text-xs uppercase tracking-wider text-gray-200 font-bold mb-2">
+              Full Name *
             </label>
             <input
               type="text"
@@ -88,13 +88,13 @@ export default function ManageProfile() {
               value={profile.name || ""}
               onChange={handleChange}
               required
-              className="w-full px-4 py-2.5 rounded-lg bg-white/[0.03] border border-white/10 focus:border-violet-500 focus:outline-none text-white text-sm"
+              className="w-full px-4 py-3 rounded-xl bg-[#181928] border-2 border-white/20 text-white placeholder-gray-400 text-sm font-medium hover:border-white/35 focus:border-violet-400 focus:bg-[#1a1c2d] focus:ring-4 focus:ring-violet-500/20 focus:outline-none transition-all"
             />
           </div>
 
           <div>
-            <label className="block text-sm font-medium mb-2 text-gray-300">
-              Professional Title
+            <label className="block text-xs uppercase tracking-wider text-gray-200 font-bold mb-2">
+              Professional Title *
             </label>
             <input
               type="text"
@@ -103,14 +103,14 @@ export default function ManageProfile() {
               onChange={handleChange}
               required
               placeholder="e.g. Full-Stack Developer"
-              className="w-full px-4 py-2.5 rounded-lg bg-white/[0.03] border border-white/10 focus:border-violet-500 focus:outline-none text-white text-sm"
+              className="w-full px-4 py-3 rounded-xl bg-[#181928] border-2 border-white/20 text-white placeholder-gray-400 text-sm font-medium hover:border-white/35 focus:border-violet-400 focus:bg-[#1a1c2d] focus:ring-4 focus:ring-violet-500/20 focus:outline-none transition-all"
             />
           </div>
         </div>
 
         <div className="grid md:grid-cols-2 gap-6">
           <div>
-            <label className="block text-sm font-medium mb-2 text-gray-300">
+            <label className="block text-xs uppercase tracking-wider text-gray-200 font-bold mb-2">
               Contact Email
             </label>
             <input
@@ -118,12 +118,12 @@ export default function ManageProfile() {
               name="email"
               value={profile.email || ""}
               onChange={handleChange}
-              className="w-full px-4 py-2.5 rounded-lg bg-white/[0.03] border border-white/10 focus:border-violet-500 focus:outline-none text-white text-sm"
+              className="w-full px-4 py-3 rounded-xl bg-[#181928] border-2 border-white/20 text-white placeholder-gray-400 text-sm font-medium hover:border-white/35 focus:border-violet-400 focus:bg-[#1a1c2d] focus:ring-4 focus:ring-violet-500/20 focus:outline-none transition-all"
             />
           </div>
 
           <div>
-            <label className="block text-sm font-medium mb-2 text-gray-300">
+            <label className="block text-xs uppercase tracking-wider text-gray-200 font-bold mb-2">
               Location
             </label>
             <input
@@ -132,40 +132,40 @@ export default function ManageProfile() {
               value={profile.location || ""}
               onChange={handleChange}
               placeholder="e.g. Addis Ababa, Ethiopia"
-              className="w-full px-4 py-2.5 rounded-lg bg-white/[0.03] border border-white/10 focus:border-violet-500 focus:outline-none text-white text-sm"
+              className="w-full px-4 py-3 rounded-xl bg-[#181928] border-2 border-white/20 text-white placeholder-gray-400 text-sm font-medium hover:border-white/35 focus:border-violet-400 focus:bg-[#1a1c2d] focus:ring-4 focus:ring-violet-500/20 focus:outline-none transition-all"
             />
           </div>
         </div>
 
         <div>
-          <label className="block text-sm font-medium mb-2 text-gray-300">
-            Hero Bio (displayed on Homepage)
+          <label className="block text-xs uppercase tracking-wider text-gray-200 font-bold mb-2">
+            Hero Bio (Displayed on Homepage)
           </label>
           <textarea
             name="bio"
             value={profile.bio || ""}
             onChange={handleChange}
             rows={3}
-            className="w-full px-4 py-2.5 rounded-lg bg-white/[0.03] border border-white/10 focus:border-violet-500 focus:outline-none resize-none text-white text-sm"
+            className="w-full px-4 py-3 rounded-xl bg-[#181928] border-2 border-white/20 text-white placeholder-gray-400 text-sm font-medium hover:border-white/35 focus:border-violet-400 focus:bg-[#1a1c2d] focus:ring-4 focus:ring-violet-500/20 focus:outline-none transition-all resize-none leading-relaxed"
           />
         </div>
 
         <div>
-          <label className="block text-sm font-medium mb-2 text-gray-300">
-            About Details (displayed on About page)
+          <label className="block text-xs uppercase tracking-wider text-gray-200 font-bold mb-2">
+            About Details (Displayed on About page)
           </label>
           <textarea
             name="about_details"
             value={profile.about_details || ""}
             onChange={handleChange}
             rows={4}
-            className="w-full px-4 py-2.5 rounded-lg bg-white/[0.03] border border-white/10 focus:border-violet-500 focus:outline-none resize-none text-white text-sm"
+            className="w-full px-4 py-3 rounded-xl bg-[#181928] border-2 border-white/20 text-white placeholder-gray-400 text-sm font-medium hover:border-white/35 focus:border-violet-400 focus:bg-[#1a1c2d] focus:ring-4 focus:ring-violet-500/20 focus:outline-none transition-all resize-none leading-relaxed"
           />
         </div>
 
         <div className="grid md:grid-cols-3 gap-6">
           <div>
-            <label className="block text-sm font-medium mb-2 text-gray-300">
+            <label className="block text-xs uppercase tracking-wider text-gray-200 font-bold mb-2">
               GitHub URL
             </label>
             <input
@@ -173,25 +173,25 @@ export default function ManageProfile() {
               name="github_url"
               value={profile.github_url || ""}
               onChange={handleChange}
-              className="w-full px-4 py-2.5 rounded-lg bg-white/[0.03] border border-white/10 focus:border-violet-500 focus:outline-none text-white text-sm"
+              className="w-full px-4 py-3 rounded-xl bg-[#181928] border-2 border-white/20 text-white placeholder-gray-400 text-sm font-medium hover:border-white/35 focus:border-violet-400 focus:outline-none"
             />
           </div>
 
           <div>
-            <label className="block text-sm font-medium mb-2 text-gray-300">
-              LinkedIn URL
+            <label className="block text-xs uppercase tracking-wider text-gray-200 font-bold mb-2">
+              LinkedIn / Social URL
             </label>
             <input
               type="url"
               name="linkedin_url"
               value={profile.linkedin_url || ""}
               onChange={handleChange}
-              className="w-full px-4 py-2.5 rounded-lg bg-white/[0.03] border border-white/10 focus:border-violet-500 focus:outline-none text-white text-sm"
+              className="w-full px-4 py-3 rounded-xl bg-[#181928] border-2 border-white/20 text-white placeholder-gray-400 text-sm font-medium hover:border-white/35 focus:border-violet-400 focus:outline-none"
             />
           </div>
 
           <div>
-            <label className="block text-sm font-medium mb-2 text-gray-300">
+            <label className="block text-xs uppercase tracking-wider text-gray-200 font-bold mb-2">
               Resume URL
             </label>
             <input
@@ -199,14 +199,20 @@ export default function ManageProfile() {
               name="resume_url"
               value={profile.resume_url || ""}
               onChange={handleChange}
-              className="w-full px-4 py-2.5 rounded-lg bg-white/[0.03] border border-white/10 focus:border-violet-500 focus:outline-none text-white text-sm"
+              className="w-full px-4 py-3 rounded-xl bg-[#181928] border-2 border-white/20 text-white placeholder-gray-400 text-sm font-medium hover:border-white/35 focus:border-violet-400 focus:outline-none"
             />
           </div>
         </div>
 
-        <Button type="submit" disabled={saving}>
-          {saving ? "Saving Changes..." : "Save Profile"}
-        </Button>
+        <div className="pt-2">
+          <button
+            type="submit"
+            disabled={saving}
+            className="w-full sm:w-auto px-8 py-3.5 rounded-xl bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-500 hover:to-indigo-500 text-white font-bold text-sm tracking-wide shadow-xl shadow-violet-600/30 transition-all cursor-pointer disabled:opacity-50"
+          >
+            {saving ? "Saving Changes..." : "Save Profile"}
+          </button>
+        </div>
       </form>
     </div>
   );

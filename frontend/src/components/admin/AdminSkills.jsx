@@ -18,7 +18,7 @@ export default function AdminSkills() {
     setLoading(true);
     try {
       const data = await api.getSkills();
-      setSkills(data);
+      setSkills(Array.isArray(data) ? data : []);
     } catch (err) {
       setError(err.message);
     } finally {
@@ -62,7 +62,7 @@ export default function AdminSkills() {
       } else {
         await api.updateSkill(editing, form);
       }
-      cancel();
+      setEditing(null);
       await load();
     } catch (err) {
       setError(err.message);
@@ -72,7 +72,7 @@ export default function AdminSkills() {
   };
 
   const handleDelete = async (id) => {
-    if (!confirm("Delete this skill?")) return;
+    if (!confirm("Are you sure you want to delete this skill?")) return;
     try {
       await api.deleteSkill(id);
       await load();
@@ -85,20 +85,26 @@ export default function AdminSkills() {
 
   return (
     <div>
-      <div className="flex justify-between items-center mb-6">
-        <h2 className="text-xl font-semibold">
-          Skills <span className="text-gray-500">({skills.length})</span>
-        </h2>
-        <button
-          onClick={startCreate}
-          className="px-4 py-2 rounded-lg bg-violet-500 hover:bg-violet-600 text-white text-sm font-medium transition-colors"
-        >
-          + New Skill
-        </button>
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
+        <div>
+          <h2 className="text-2xl font-extrabold text-white">Technical Skills</h2>
+          <p className="text-sm text-gray-300 font-medium">
+            Manage proficiency levels and categories displayed on your About page.
+          </p>
+        </div>
+        {editing === null && (
+          <button
+            type="button"
+            onClick={startCreate}
+            className="px-6 py-3 rounded-xl bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-500 hover:to-indigo-500 text-white font-bold text-xs uppercase tracking-wider shadow-xl shadow-violet-600/30 transition-all hover:scale-105 cursor-pointer self-start sm:self-auto"
+          >
+            + Add Skill
+          </button>
+        )}
       </div>
 
       {error && (
-        <p className="mb-4 p-3 rounded-lg bg-red-500/10 border border-red-500/30 text-red-400 text-sm">
+        <p className="mb-6 p-4 rounded-2xl bg-red-500/15 border-2 border-red-400 text-red-200 text-sm font-bold shadow-md">
           {error}
         </p>
       )}
@@ -108,66 +114,80 @@ export default function AdminSkills() {
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
           onSubmit={handleSubmit}
-          className="mb-8 p-6 rounded-xl border border-violet-500/30 bg-violet-500/[0.03] space-y-4"
+          className="mb-10 p-6 sm:p-8 rounded-2xl border-2 border-violet-400 bg-[#181928] space-y-5 shadow-2xl"
         >
-          <h3 className="text-lg font-semibold mb-2">
-            {editing === "new" ? "New Skill" : "Edit Skill"}
-          </h3>
+          <div className="flex items-center justify-between pb-3 border-b border-white/10">
+            <h3 className="text-xl font-extrabold text-white">
+              {editing === "new" ? "Add New Skill" : "Edit Skill"}
+            </h3>
+            <span className="text-xs text-violet-300 font-bold bg-violet-500/20 px-3 py-1 rounded-full border border-violet-400/50">
+              {editing === "new" ? "New Entry" : `ID: ${editing}`}
+            </span>
+          </div>
 
-          <div className="grid md:grid-cols-3 gap-4">
+          <div className="grid md:grid-cols-3 gap-5">
             <div>
-              <label className="block text-xs font-medium mb-1.5 text-gray-400">Name</label>
+              <label className="block text-xs uppercase tracking-wider text-gray-200 font-bold mb-2">
+                Skill Name *
+              </label>
               <input
                 name="name"
                 value={form.name}
                 onChange={handleChange}
                 required
-                className="w-full px-3 py-2 rounded-lg bg-white/[0.03] border border-white/10 focus:border-violet-500 focus:outline-none text-sm"
+                placeholder="e.g. TypeScript"
+                className="w-full px-4 py-3 rounded-xl bg-[#13141f] border-2 border-white/20 text-white placeholder-gray-400 text-sm font-medium hover:border-white/35 focus:border-violet-400 focus:bg-[#1a1c2d] focus:outline-none transition-all"
               />
             </div>
+
             <div>
-              <label className="block text-xs font-medium mb-1.5 text-gray-400">Category</label>
+              <label className="block text-xs uppercase tracking-wider text-gray-200 font-bold mb-2">
+                Category
+              </label>
               <select
                 name="category"
                 value={form.category}
                 onChange={handleChange}
-                className="w-full px-3 py-2 rounded-lg bg-white/[0.03] border border-white/10 focus:border-violet-500 focus:outline-none text-sm"
+                className="w-full px-4 py-3 rounded-xl bg-[#13141f] border-2 border-white/20 text-white text-sm font-medium hover:border-white/35 focus:border-violet-400 focus:outline-none transition-all"
               >
                 {CATEGORIES.map((c) => (
-                  <option key={c} value={c} className="bg-[#0a0a0f]">
+                  <option key={c} value={c} className="bg-[#13141f]">
                     {c}
                   </option>
                 ))}
               </select>
             </div>
+
             <div>
-              <label className="block text-xs font-medium mb-1.5 text-gray-400">
-                Level ({form.level}/5)
+              <label className="block text-xs uppercase tracking-wider text-gray-200 font-bold mb-2">
+                Proficiency Level ({form.level}/5)
               </label>
-              <input
-                type="range"
-                name="level"
-                min="1"
-                max="5"
-                value={form.level}
-                onChange={handleChange}
-                className="w-full accent-violet-500"
-              />
+              <div className="pt-2">
+                <input
+                  type="range"
+                  name="level"
+                  min="1"
+                  max="5"
+                  value={form.level}
+                  onChange={handleChange}
+                  className="w-full accent-violet-500 cursor-pointer"
+                />
+              </div>
             </div>
           </div>
 
-          <div className="flex gap-3 pt-2">
+          <div className="flex items-center gap-3 pt-4 border-t border-white/10">
             <button
               type="submit"
               disabled={saving}
-              className="px-5 py-2 rounded-lg bg-violet-500 hover:bg-violet-600 disabled:opacity-50 text-white text-sm font-medium transition-colors"
+              className="px-7 py-3 rounded-xl bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-500 hover:to-indigo-500 text-white font-bold text-xs uppercase tracking-wider shadow-lg shadow-violet-600/30 transition-all cursor-pointer disabled:opacity-50"
             >
-              {saving ? "Saving..." : editing === "new" ? "Create" : "Update"}
+              {saving ? "Saving..." : editing === "new" ? "Create Skill" : "Save Changes"}
             </button>
             <button
               type="button"
               onClick={cancel}
-              className="px-5 py-2 rounded-lg border border-white/10 hover:bg-white/5 text-sm transition-colors"
+              className="px-6 py-3 rounded-xl border-2 border-white/20 bg-[#13141f] hover:border-white text-gray-200 hover:text-white font-bold text-xs uppercase tracking-wider transition-all cursor-pointer"
             >
               Cancel
             </button>
@@ -176,32 +196,36 @@ export default function AdminSkills() {
       )}
 
       {skills.length === 0 ? (
-        <p className="text-gray-500">No skills yet.</p>
+        <p className="text-gray-400 py-8 text-center font-medium">No skills yet.</p>
       ) : (
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-3">
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
           {skills.map((skill) => (
             <div
               key={skill.id}
-              className="flex items-center justify-between gap-3 p-4 rounded-lg border border-white/10 bg-white/[0.02]"
+              className="flex items-center justify-between gap-3 p-5 rounded-2xl border-2 border-white/20 bg-[#181928] hover:border-violet-400 transition-all shadow-md"
             >
               <div className="min-w-0 flex-1">
-                <div className="font-medium text-sm truncate">{skill.name}</div>
-                <div className="text-xs text-gray-500">
-                  {skill.category} · {skill.level}/5
+                <div className="font-extrabold text-white text-sm sm:text-base truncate">
+                  {skill.name}
+                </div>
+                <div className="text-xs text-violet-300 font-bold mt-0.5">
+                  {skill.category} · Level {skill.level}/5
                 </div>
               </div>
-              <div className="flex gap-1.5 shrink-0">
+              <div className="flex items-center gap-2 shrink-0">
                 <button
+                  type="button"
                   onClick={() => startEdit(skill)}
-                  className="px-2.5 py-1 rounded text-xs border border-white/10 hover:bg-white/5 transition-colors"
+                  className="px-3 py-1.5 rounded-xl border-2 border-violet-400 bg-violet-600/20 hover:bg-violet-600 text-violet-200 hover:text-white font-bold text-xs uppercase tracking-wider transition-all cursor-pointer"
                 >
                   Edit
                 </button>
                 <button
+                  type="button"
                   onClick={() => handleDelete(skill.id)}
-                  className="px-2.5 py-1 rounded text-xs border border-red-500/30 text-red-400 hover:bg-red-500/10 transition-colors"
+                  className="px-3 py-1.5 rounded-xl border-2 border-red-400 bg-red-600/20 hover:bg-red-600 text-red-200 hover:text-white font-bold text-xs uppercase tracking-wider transition-all cursor-pointer"
                 >
-                  ✕
+                  Delete
                 </button>
               </div>
             </div>

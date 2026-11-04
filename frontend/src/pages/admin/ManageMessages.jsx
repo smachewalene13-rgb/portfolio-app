@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import contactApi from "../../api/contactApi";
 import Loader from "../../components/common/Loader";
-import Button from "../../components/common/Button";
 import ErrorMessage from "../../components/common/ErrorMessage";
 import { formatDateTime } from "../../utils/formatDate";
 
@@ -45,16 +44,19 @@ export default function ManageMessages() {
     }
   };
 
-  if (loading) return <Loader label="Loading messages..." />;
+  if (loading) return <Loader label="Loading client messages..." />;
 
   return (
     <div>
-      <div className="flex justify-between items-center mb-6">
+      <div className="flex justify-between items-center mb-8">
         <div>
-          <h2 className="text-xl font-semibold">
-            Messages <span className="text-gray-500 font-normal">({messages.length})</span>
+          <h2 className="text-2xl font-extrabold text-white">
+            Client Inquiries{" "}
+            <span className="text-violet-400 font-extrabold">({messages.length})</span>
           </h2>
-          <p className="text-sm text-gray-400">Visitor contact inquiries and messages.</p>
+          <p className="text-sm text-gray-300 font-medium">
+            Visitor contact inquiries submitted through your portfolio.
+          </p>
         </div>
       </div>
 
@@ -65,68 +67,73 @@ export default function ManageMessages() {
       )}
 
       {messages.length === 0 ? (
-        <p className="text-gray-500">No messages received yet.</p>
+        <p className="text-gray-400 py-8 text-center font-medium">No messages received yet.</p>
       ) : (
         <div className="space-y-4">
-          {messages.map((msg) => (
-            <div
-              key={msg.id}
-              className={`p-5 rounded-xl border transition-all ${
-                msg.isRead || msg.is_read
-                  ? "border-white/5 bg-white/[0.01]"
-                  : "border-violet-500/30 bg-violet-500/[0.03]"
-              }`}
-            >
-              <div className="flex items-start justify-between gap-4 mb-2">
-                <div>
-                  <div className="flex items-center gap-2">
-                    <span className="font-semibold text-white">{msg.name}</span>
-                    {!(msg.isRead || msg.is_read) && (
-                      <span className="text-[10px] font-bold uppercase tracking-wider bg-violet-500 text-white px-2 py-0.5 rounded-full">
-                        New
+          {messages.map((msg) => {
+            const isUnread = !(msg.isRead || msg.is_read);
+            return (
+              <div
+                key={msg.id}
+                className={`p-6 rounded-2xl border-2 transition-all shadow-lg ${
+                  isUnread
+                    ? "border-violet-400 bg-[#1c1d30] shadow-violet-900/30"
+                    : "border-white/20 bg-[#181928]"
+                }`}
+              >
+                <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4 mb-3">
+                  <div>
+                    <div className="flex items-center gap-2.5">
+                      <span className="font-extrabold text-white text-base sm:text-lg">
+                        {msg.name}
                       </span>
-                    )}
+                      {isUnread && (
+                        <span className="text-[10px] font-extrabold uppercase tracking-wider bg-violet-600 text-white px-3 py-0.5 rounded-full shadow-md shadow-violet-600/40 border border-violet-400">
+                          New
+                        </span>
+                      )}
+                    </div>
+                    <a
+                      href={`mailto:${msg.email}`}
+                      className="text-xs sm:text-sm text-violet-300 hover:text-white hover:underline font-bold mt-0.5 inline-block"
+                    >
+                      {msg.email}
+                    </a>
                   </div>
-                  <a
-                    href={`mailto:${msg.email}`}
-                    className="text-xs text-violet-400 hover:underline"
-                  >
-                    {msg.email}
-                  </a>
+
+                  <div className="flex flex-wrap items-center gap-2.5 shrink-0">
+                    <time className="text-xs text-gray-300 font-medium">
+                      {formatDateTime(msg.createdAt || msg.created_at)}
+                    </time>
+                    <button
+                      type="button"
+                      onClick={() => handleToggleRead(msg.id, msg.isRead || msg.is_read)}
+                      className="px-3.5 py-1.5 rounded-xl border-2 border-white/20 bg-[#13141f] hover:border-white text-gray-200 hover:text-white font-bold text-xs transition-all cursor-pointer"
+                    >
+                      {msg.isRead || msg.is_read ? "Mark Unread" : "Mark Read"}
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => handleDelete(msg.id)}
+                      className="px-3.5 py-1.5 rounded-xl bg-red-600/20 hover:bg-red-600 text-red-200 hover:text-white border-2 border-red-500/40 hover:border-red-400 font-bold text-xs uppercase tracking-wider transition-all cursor-pointer"
+                    >
+                      Delete
+                    </button>
+                  </div>
                 </div>
 
-                <div className="flex items-center gap-2 shrink-0">
-                  <time className="text-xs text-gray-500">
-                    {formatDateTime(msg.createdAt || msg.created_at)}
-                  </time>
-                  <Button
-                    variant="outline"
-                    className="py-1 px-2.5 text-xs"
-                    onClick={() => handleToggleRead(msg.id, msg.isRead || msg.is_read)}
-                  >
-                    {msg.isRead || msg.is_read ? "Mark Unread" : "Mark Read"}
-                  </Button>
-                  <Button
-                    variant="danger"
-                    className="py-1 px-2.5 text-xs"
-                    onClick={() => handleDelete(msg.id)}
-                  >
-                    Delete
-                  </Button>
+                {msg.subject && (
+                  <div className="text-xs uppercase tracking-wider font-bold text-violet-300 mb-2">
+                    Subject: <span className="text-white normal-case font-semibold">{msg.subject}</span>
+                  </div>
+                )}
+
+                <div className="text-sm text-gray-100 whitespace-pre-wrap leading-relaxed mt-3 bg-[#13141f] p-4 rounded-xl border-2 border-white/10 font-normal shadow-inner">
+                  {msg.message || msg.content}
                 </div>
               </div>
-
-              {msg.subject && (
-                <div className="text-xs font-medium text-gray-300 mb-1">
-                  Subject: <span className="text-white">{msg.subject}</span>
-                </div>
-              )}
-
-              <p className="text-sm text-gray-300 whitespace-pre-wrap leading-relaxed mt-2 bg-black/20 p-3 rounded-lg border border-white/5">
-                {msg.message || msg.content}
-              </p>
-            </div>
-          ))}
+            );
+          })}
         </div>
       )}
     </div>
