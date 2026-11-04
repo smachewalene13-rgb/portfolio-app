@@ -123,10 +123,18 @@ export default function Home() {
               <div className="relative aspect-square rounded-3xl overflow-hidden border-2 border-white/25 bg-[#13141f] shadow-2xl shadow-black/80 hover:border-violet-400 transition-all">
                 <img
                   src="/hero.jpg"
-                  alt="Simachew Alene - Full-Stack Developer"
+                  alt="Sami.dev - Full-Stack Developer"
                   className="w-full h-full object-cover"
                 />
                 <div className="absolute inset-0 bg-gradient-to-tr from-violet-500/20 via-transparent to-transparent pointer-events-none" />
+
+                {/* Floating Sami.dev badge */}
+                <div className="absolute bottom-4 left-4 px-4 py-2 rounded-2xl bg-[#0a0a0f]/90 backdrop-blur-md border-2 border-white/25 shadow-2xl flex items-center gap-2.5">
+                  <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse" />
+                  <span className="text-xs sm:text-sm font-extrabold tracking-wide text-white">
+                    Sami<span className="text-violet-400">.dev</span>
+                  </span>
+                </div>
               </div>
               <div className="absolute -inset-4 -z-10 rounded-3xl bg-violet-500/15 blur-3xl pointer-events-none" />
             </motion.div>

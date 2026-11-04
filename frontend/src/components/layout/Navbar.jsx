@@ -31,12 +31,21 @@ export default function Navbar() {
   return (
     <nav className="fixed top-0 inset-x-0 z-50 backdrop-blur-xl bg-[#0a0a0f]/90 border-b-2 border-white/10">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
-        {/* Brand / Logo */}
+        {/* Brand / Logo with Hero Avatar Image */}
         <Link
           to="/"
-          className="text-lg sm:text-xl font-extrabold tracking-tight text-white hover:text-violet-300 transition-colors"
+          className="flex items-center gap-2.5 group transition-colors select-none"
         >
-          Simachew Alene
+          <div className="relative w-8 h-8 sm:w-9 sm:h-9 rounded-full overflow-hidden border-2 border-violet-400/60 shadow-md shadow-violet-500/20 group-hover:border-violet-300 transition-all shrink-0">
+            <img
+              src="/hero.jpg"
+              alt="Sami.dev"
+              className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+            />
+          </div>
+          <span className="text-lg sm:text-xl font-extrabold tracking-tight text-white group-hover:text-violet-300 transition-colors">
+            Sami<span className="text-violet-400">.dev</span>
+          </span>
         </Link>
 
         {/* Desktop Navigation (Hidden on Mobile) */}
