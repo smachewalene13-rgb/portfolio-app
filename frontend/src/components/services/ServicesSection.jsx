@@ -65,36 +65,39 @@ const METRICS = [
 
 export default function ServicesSection() {
   return (
-    <section className="max-w-6xl mx-auto px-6 py-20">
-      {/* Metrics Counter Bar */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 p-6 rounded-2xl border border-white/10 bg-white/[0.02] backdrop-blur-sm mb-16 shadow-xl shadow-black/20">
-        {METRICS.map((metric, i) => (
-          <div key={i} className="text-center p-3">
-            <div className="text-3xl md:text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-violet-400 to-indigo-300 mb-1">
-              {metric.value}
+    <section className="max-w-6xl mx-auto px-4 sm:px-6 py-20">
+      {/* Metrics Counter Bar with High Visibility */}
+      <div className="relative rounded-3xl border-2 border-white/20 bg-[#13141f] p-6 sm:p-8 shadow-2xl shadow-black/80 mb-20 overflow-hidden">
+        <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-violet-500 via-purple-500 to-indigo-500" />
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+          {METRICS.map((metric, i) => (
+            <div key={i} className="text-center p-3">
+              <div className="text-3xl md:text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-violet-400 via-purple-300 to-indigo-300 mb-1">
+                {metric.value}
+              </div>
+              <div className="text-xs uppercase tracking-wider text-violet-300 font-bold">
+                {metric.label}
+              </div>
             </div>
-            <div className="text-xs uppercase tracking-wider text-gray-400 font-medium">
-              {metric.label}
-            </div>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
 
       {/* Header */}
-      <div className="text-center max-w-2xl mx-auto mb-14">
-        <span className="text-xs font-semibold uppercase tracking-widest text-violet-400 bg-violet-500/10 px-3 py-1 rounded-full border border-violet-500/20 inline-block mb-3">
+      <div className="text-center max-w-2xl mx-auto mb-16">
+        <span className="text-xs font-bold uppercase tracking-widest text-violet-300 bg-violet-500/15 border-2 border-violet-400/80 px-4 py-1.5 rounded-full inline-block mb-4 shadow-md shadow-violet-500/20">
           Services & Solutions
         </span>
-        <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
+        <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-white mb-4 tracking-tight">
           What I Can Build For You
         </h2>
-        <p className="text-gray-400 text-sm md:text-base leading-relaxed">
+        <p className="text-gray-200 text-sm sm:text-base leading-relaxed font-normal">
           From concept to deployment, I help startups, businesses, and engineering teams build scalable digital products that deliver real business impact.
         </p>
       </div>
 
       {/* Services Grid */}
-      <div className="grid md:grid-cols-2 gap-6">
+      <div className="grid md:grid-cols-2 gap-8">
         {SERVICES.map((service, index) => (
           <ServiceCard key={service.title} {...service} index={index} />
         ))}
