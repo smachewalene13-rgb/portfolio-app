@@ -108,7 +108,7 @@ export default function ContactForm() {
           >
             {/* Quick Topic Selection */}
             <div>
-              <label className="block text-xs uppercase tracking-wider text-violet-300 font-bold mb-3">
+              <label className="block text-xs uppercase tracking-wider text-violet-300 font-extrabold mb-3">
                 What would you like to discuss?
               </label>
               <div className="flex flex-wrap gap-2.5">
@@ -121,8 +121,8 @@ export default function ContactForm() {
                       onClick={() => handleSelectTopic(topic)}
                       className={`text-xs px-4 py-2.5 rounded-xl font-bold border-2 transition-all cursor-pointer ${
                         isActive
-                          ? "bg-violet-600 border-violet-400 text-white shadow-lg shadow-violet-600/30 scale-105"
-                          : "bg-[#181928] border-white/20 text-gray-200 hover:border-violet-400 hover:text-white hover:bg-violet-600/10"
+                          ? "bg-gradient-to-r from-violet-600 to-indigo-600 border-violet-300 text-white shadow-lg shadow-violet-600/40 scale-105"
+                          : "bg-slate-800/90 border-slate-600 text-slate-100 hover:border-violet-400 hover:text-white hover:bg-violet-600/20 shadow-sm"
                       }`}
                     >
                       {topic}
@@ -146,7 +146,7 @@ export default function ContactForm() {
             {/* Two-column responsive inputs: Name & Email */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
               <div>
-                <label className="block text-xs uppercase tracking-wider text-gray-200 font-bold mb-2">
+                <label className="block text-xs uppercase tracking-wider text-slate-200 font-extrabold mb-2">
                   Full Name <span className="text-violet-400">*</span>
                 </label>
                 <input
@@ -156,12 +156,12 @@ export default function ContactForm() {
                   onChange={handleChange}
                   required
                   placeholder="e.g. Alex Johnson"
-                  className="w-full px-4 py-3.5 rounded-xl bg-[#181928] border-2 border-white/20 text-white placeholder-gray-400 text-sm font-medium hover:border-white/35 focus:border-violet-400 focus:bg-[#1d1f33] focus:ring-4 focus:ring-violet-500/20 focus:outline-none transition-all shadow-inner"
+                  className="w-full px-4 py-3.5 rounded-xl bg-slate-900 border-2 border-slate-600 text-white placeholder-slate-400 text-sm font-medium hover:border-slate-400 focus:border-violet-400 focus:bg-slate-800/90 focus:ring-4 focus:ring-violet-500/25 focus:outline-none transition-all shadow-inner"
                 />
               </div>
 
               <div>
-                <label className="block text-xs uppercase tracking-wider text-gray-200 font-bold mb-2">
+                <label className="block text-xs uppercase tracking-wider text-slate-200 font-extrabold mb-2">
                   Email Address <span className="text-violet-400">*</span>
                 </label>
                 <input
@@ -171,14 +171,14 @@ export default function ContactForm() {
                   onChange={handleChange}
                   required
                   placeholder="e.g. alex@company.com"
-                  className="w-full px-4 py-3.5 rounded-xl bg-[#181928] border-2 border-white/20 text-white placeholder-gray-400 text-sm font-medium hover:border-white/35 focus:border-violet-400 focus:bg-[#1d1f33] focus:ring-4 focus:ring-violet-500/20 focus:outline-none transition-all shadow-inner"
+                  className="w-full px-4 py-3.5 rounded-xl bg-slate-900 border-2 border-slate-600 text-white placeholder-slate-400 text-sm font-medium hover:border-slate-400 focus:border-violet-400 focus:bg-slate-800/90 focus:ring-4 focus:ring-violet-500/25 focus:outline-none transition-all shadow-inner"
                 />
               </div>
             </div>
 
             {/* Subject */}
             <div>
-              <label className="block text-xs uppercase tracking-wider text-gray-200 font-bold mb-2">
+              <label className="block text-xs uppercase tracking-wider text-slate-200 font-extrabold mb-2">
                 Subject
               </label>
               <input
@@ -187,13 +187,13 @@ export default function ContactForm() {
                 value={form.subject}
                 onChange={handleChange}
                 placeholder="Choose a topic above or type a custom subject..."
-                className="w-full px-4 py-3.5 rounded-xl bg-[#181928] border-2 border-white/20 text-white placeholder-gray-400 text-sm font-medium hover:border-white/35 focus:border-violet-400 focus:bg-[#1d1f33] focus:ring-4 focus:ring-violet-500/20 focus:outline-none transition-all shadow-inner"
+                className="w-full px-4 py-3.5 rounded-xl bg-slate-900 border-2 border-slate-600 text-white placeholder-slate-400 text-sm font-medium hover:border-slate-400 focus:border-violet-400 focus:bg-slate-800/90 focus:ring-4 focus:ring-violet-500/25 focus:outline-none transition-all shadow-inner"
               />
             </div>
 
             {/* Message Textarea */}
             <div>
-              <label className="block text-xs uppercase tracking-wider text-gray-200 font-bold mb-2">
+              <label className="block text-xs uppercase tracking-wider text-slate-200 font-extrabold mb-2">
                 Message <span className="text-violet-400">*</span>
               </label>
               <textarea
@@ -203,7 +203,7 @@ export default function ContactForm() {
                 required
                 rows={5}
                 placeholder="Share project scope, role requirements, timeline, or any questions..."
-                className="w-full px-4 py-3.5 rounded-xl bg-[#181928] border-2 border-white/20 text-white placeholder-gray-400 text-sm font-medium hover:border-white/35 focus:border-violet-400 focus:bg-[#1d1f33] focus:ring-4 focus:ring-violet-500/20 focus:outline-none transition-all resize-none leading-relaxed shadow-inner"
+                className="w-full px-4 py-3.5 rounded-xl bg-slate-900 border-2 border-slate-600 text-white placeholder-slate-400 text-sm font-medium hover:border-slate-400 focus:border-violet-400 focus:bg-slate-800/90 focus:ring-4 focus:ring-violet-500/25 focus:outline-none transition-all resize-none leading-relaxed shadow-inner"
               />
             </div>
 
@@ -212,7 +212,7 @@ export default function ContactForm() {
               <button
                 type="submit"
                 disabled={status === "sending"}
-                className="w-full sm:w-auto px-10 py-4 rounded-xl bg-gradient-to-r from-violet-600 via-purple-600 to-indigo-600 hover:from-violet-500 hover:to-indigo-500 text-white font-bold text-sm tracking-wide shadow-xl shadow-violet-600/30 disabled:opacity-50 disabled:cursor-not-allowed transition-all cursor-pointer hover:scale-[1.02]"
+                className="w-full sm:w-auto px-10 py-4 rounded-xl bg-gradient-to-r from-violet-600 via-purple-600 to-indigo-600 hover:from-violet-500 hover:to-indigo-500 text-white font-extrabold text-sm uppercase tracking-wider shadow-xl shadow-violet-600/40 border border-violet-400/40 disabled:opacity-50 disabled:cursor-not-allowed transition-all cursor-pointer hover:scale-[1.02]"
               >
                 {status === "sending" ? "Delivering Message..." : "Send Message"}
               </button>

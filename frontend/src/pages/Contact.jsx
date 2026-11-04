@@ -47,14 +47,14 @@ export default function Contact() {
               {/* Direct Info Cards with High Contrast & Clear Borders */}
               <div className="space-y-4">
                 {/* Email Card with 1-click copy */}
-                <div className="p-5 rounded-2xl border-2 border-white/20 bg-[#13141f] hover:border-violet-400 transition-all shadow-xl">
-                  <div className="text-xs uppercase tracking-wider text-violet-300 font-bold mb-2">
+                <div className="p-5 rounded-2xl border-2 border-slate-600 bg-slate-900/95 hover:border-violet-400 transition-all shadow-xl">
+                  <div className="text-xs uppercase tracking-wider text-violet-300 font-extrabold mb-2">
                     Direct Email
                   </div>
                   <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                     <a
                       href={`mailto:${email}`}
-                      className="text-sm sm:text-base font-bold text-white hover:text-violet-300 transition-colors break-all"
+                      className="text-sm sm:text-base font-extrabold text-white hover:text-violet-300 transition-colors break-all"
                     >
                       {email}
                     </a>
@@ -64,7 +64,7 @@ export default function Contact() {
                       className={`shrink-0 px-4 py-2 rounded-xl text-xs font-bold uppercase tracking-wider transition-all cursor-pointer ${
                         copied
                           ? "bg-emerald-500/30 text-emerald-200 border-2 border-emerald-400 shadow-md shadow-emerald-500/20"
-                          : "border-2 border-violet-500/40 bg-violet-600/20 text-violet-200 hover:bg-violet-600 hover:text-white hover:border-violet-400"
+                          : "border-2 border-violet-500/60 bg-violet-600/30 text-violet-200 hover:bg-violet-600 hover:text-white hover:border-violet-400"
                       }`}
                     >
                       {copied ? "Copied" : "Copy"}
@@ -73,24 +73,24 @@ export default function Contact() {
                 </div>
 
                 {/* Location & Timezone Card */}
-                <div className="p-5 rounded-2xl border-2 border-white/20 bg-[#13141f] shadow-xl">
-                  <div className="text-xs uppercase tracking-wider text-violet-300 font-bold mb-2">
+                <div className="p-5 rounded-2xl border-2 border-slate-600 bg-slate-900/95 shadow-xl">
+                  <div className="text-xs uppercase tracking-wider text-violet-300 font-extrabold mb-2">
                     Location & Working Hours
                   </div>
-                  <div className="text-sm sm:text-base font-bold text-white">
+                  <div className="text-sm sm:text-base font-extrabold text-white">
                     Addis Ababa, Ethiopia (UTC+3)
                   </div>
-                  <p className="text-xs text-gray-300 mt-1.5 leading-relaxed font-medium">
+                  <p className="text-xs text-slate-300 mt-1.5 leading-relaxed font-medium">
                     Open to remote roles globally. Flexible overlap with US, UK, and European business hours.
                   </p>
                 </div>
 
                 {/* Response Guarantee Card */}
-                <div className="p-5 rounded-2xl border-2 border-violet-500/40 bg-gradient-to-r from-violet-950/60 to-purple-950/40 shadow-xl">
-                  <div className="text-xs uppercase tracking-wider text-violet-300 font-bold mb-1">
+                <div className="p-5 rounded-2xl border-2 border-violet-500/60 bg-gradient-to-br from-violet-950/80 to-slate-900/95 shadow-xl">
+                  <div className="text-xs uppercase tracking-wider text-violet-300 font-extrabold mb-1">
                     Response Guarantee
                   </div>
-                  <div className="text-xs sm:text-sm text-gray-200 leading-relaxed font-medium">
+                  <div className="text-xs sm:text-sm text-slate-200 leading-relaxed font-medium">
                     Messages are delivered directly to my personal device. I typically respond within 24 hours.
                   </div>
                 </div>
@@ -98,7 +98,7 @@ export default function Contact() {
 
               {/* Direct Channels */}
               <div>
-                <div className="text-xs uppercase tracking-wider text-violet-300 font-bold mb-3">
+                <div className="text-xs uppercase tracking-wider text-violet-300 font-extrabold mb-3">
                   Connect Directly
                 </div>
                 <div className="flex flex-wrap gap-3">
@@ -106,7 +106,7 @@ export default function Contact() {
                     href="https://github.com"
                     target="_blank"
                     rel="noreferrer"
-                    className="px-5 py-2.5 rounded-xl border-2 border-white/20 hover:border-white bg-[#181928] text-xs font-bold text-white transition-all shadow-md hover:scale-105"
+                    className="px-5 py-2.5 rounded-xl border-2 border-slate-600 hover:border-white bg-slate-800/90 text-xs font-extrabold text-white transition-all shadow-md hover:scale-105"
                   >
                     GitHub
                   </a>
@@ -114,7 +114,7 @@ export default function Contact() {
                     href="https://t.me/Simexsami"
                     target="_blank"
                     rel="noreferrer"
-                    className="px-5 py-2.5 rounded-xl border-2 border-sky-400/80 bg-sky-500/20 hover:bg-sky-500/30 text-xs font-bold text-sky-200 transition-all shadow-md shadow-sky-500/20 hover:scale-105"
+                    className="px-5 py-2.5 rounded-xl border-2 border-sky-400 bg-sky-500/25 hover:bg-sky-500/40 text-xs font-extrabold text-sky-100 transition-all shadow-md shadow-sky-500/20 hover:scale-105"
                   >
                     Telegram (@Simexsami)
                   </a>
@@ -124,7 +124,7 @@ export default function Contact() {
                     )}`}
                     target="_blank"
                     rel="noreferrer"
-                    className="px-5 py-2.5 rounded-xl border-2 border-emerald-400/80 bg-emerald-500/20 hover:bg-emerald-500/30 text-xs font-bold text-emerald-200 transition-all shadow-md shadow-emerald-500/20 hover:scale-105"
+                    className="px-5 py-2.5 rounded-xl border-2 border-emerald-400 bg-emerald-500/25 hover:bg-emerald-500/40 text-xs font-extrabold text-emerald-100 transition-all shadow-md shadow-emerald-500/20 hover:scale-105"
                   >
                     WhatsApp Chat
                   </a>
@@ -134,7 +134,7 @@ export default function Contact() {
 
             {/* Right Column: High-Visibility Sleek Form Card */}
             <div className="lg:col-span-7">
-              <div className="relative rounded-3xl border-2 border-white/20 bg-[#13141f] p-6 sm:p-8 lg:p-10 shadow-2xl shadow-black/90 overflow-hidden">
+              <div className="relative rounded-3xl border-2 border-slate-600 bg-slate-900/95 p-6 sm:p-8 lg:p-10 shadow-2xl shadow-black/80 overflow-hidden">
                 {/* Decorative Top Accent Bar */}
                 <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-violet-500 via-purple-500 to-indigo-500" />
 
@@ -142,7 +142,7 @@ export default function Contact() {
                   <h2 className="text-2xl sm:text-3xl font-extrabold text-white mb-2">
                     Send a Message
                   </h2>
-                  <p className="text-xs sm:text-sm text-gray-300 font-medium">
+                  <p className="text-xs sm:text-sm text-slate-300 font-medium">
                     Fill in your details below and your message will be delivered directly to my inbox.
                   </p>
                 </div>
