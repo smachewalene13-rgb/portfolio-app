@@ -46,18 +46,6 @@ export default function Home() {
   return (
     <PageTransition>
       <div className="relative overflow-hidden">
-        {/* Fixed Cyber Tech Background Image */}
-        <div className="fixed inset-0 -z-10 pointer-events-none overflow-hidden">
-          <div
-            className="absolute inset-0 bg-cover bg-center bg-no-repeat transform-gpu"
-            style={{
-              backgroundImage: `url('https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?auto=format&fit=crop&w=2000&q=80')`,
-              opacity: 0.2,
-            }}
-          />
-          <div className="absolute inset-0 bg-gradient-to-b from-[#0a0a0f]/85 via-[#0a0a0f]/80 to-[#0a0a0f]" />
-        </div>
-
         {/* Subtle Ambient background glows */}
         <div className="absolute top-24 left-1/4 -translate-x-1/2 w-[550px] h-[550px] bg-violet-600/15 rounded-full blur-[140px] pointer-events-none" />
         <div className="absolute top-1/2 right-10 w-[450px] h-[450px] bg-indigo-600/15 rounded-full blur-[140px] pointer-events-none" />
