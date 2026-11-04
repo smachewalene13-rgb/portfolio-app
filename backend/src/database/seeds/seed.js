@@ -108,6 +108,32 @@ export async function runSeeds() {
           published: true,
           display_order: 2,
         },
+        {
+          title: "Sami Cafe",
+          description:
+            "A modern cafe and restaurant web application designed to showcase menu offerings, streamline online ordering, and facilitate customer reservations.",
+          image_url:
+            "https://images.unsplash.com/photo-1554118811-1e0d58224f24?auto=format&fit=crop&w=1200&q=80",
+          live_url: "https://portfolio-1uv65r27m-sami-b153.vercel.app/",
+          repo_url: "https://github.com/smachewalene13-rgb",
+          tags: ["react", "node.js", "tailwind css", "javascript"],
+          featured: true,
+          published: true,
+          display_order: 3,
+        },
+        {
+          title: "Hotel Booking System",
+          description:
+            "A web-based hotel reservation platform designed for exploring room accommodations, managing bookings, and processing guest stays seamlessly.",
+          image_url:
+            "https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=1200&q=80",
+          live_url: "https://hotel-booking-nf3sk9c0k-sami-b153.vercel.app/",
+          repo_url: "https://github.com/smachewalene13-rgb",
+          tags: ["react", "node.js", "tailwind css", "postgresql"],
+          featured: true,
+          published: true,
+          display_order: 4,
+        },
       ];
 
       for (const p of defaultProjects) {

@@ -19,24 +19,51 @@ export default function ProjectCard({ project, index = 0 }) {
         </span>
       )}
 
-      <div className="mb-4 aspect-video w-full rounded-xl overflow-hidden bg-gradient-to-br from-violet-950/40 via-slate-900/60 to-purple-950/30 border border-white/10 flex items-center justify-center p-4 relative group-hover:border-violet-500/40 transition-colors">
-        {imageUrl ? (
-          <img
-            src={imageUrl}
-            alt={project.title}
-            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-          />
-        ) : (
-          <div className="text-center px-4">
-            <span className="text-[11px] uppercase tracking-widest font-semibold text-violet-400">
-              {project.tags?.[0] || "Full-Stack Project"}
-            </span>
-            <div className="text-sm md:text-base font-bold text-white mt-1 line-clamp-1">
-              {project.title}
+      {liveUrl ? (
+        <a
+          href={liveUrl}
+          target="_blank"
+          rel="noreferrer"
+          title={`Open ${project.title} Live Demo`}
+          className="mb-4 aspect-video w-full rounded-xl overflow-hidden bg-gradient-to-br from-violet-950/40 via-slate-900/60 to-purple-950/30 border border-white/10 flex items-center justify-center relative group-hover:border-violet-500/50 transition-all cursor-pointer block"
+        >
+          {imageUrl ? (
+            <img
+              src={imageUrl}
+              alt={project.title}
+              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+            />
+          ) : (
+            <div className="text-center px-4">
+              <span className="text-[11px] uppercase tracking-widest font-semibold text-violet-400">
+                {project.tags?.[0] || "Full-Stack Project"}
+              </span>
+              <div className="text-sm md:text-base font-bold text-white mt-1 line-clamp-1">
+                {project.title}
+              </div>
             </div>
-          </div>
-        )}
-      </div>
+          )}
+        </a>
+      ) : (
+        <div className="mb-4 aspect-video w-full rounded-xl overflow-hidden bg-gradient-to-br from-violet-950/40 via-slate-900/60 to-purple-950/30 border border-white/10 flex items-center justify-center p-4 relative group-hover:border-violet-500/40 transition-colors">
+          {imageUrl ? (
+            <img
+              src={imageUrl}
+              alt={project.title}
+              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+            />
+          ) : (
+            <div className="text-center px-4">
+              <span className="text-[11px] uppercase tracking-widest font-semibold text-violet-400">
+                {project.tags?.[0] || "Full-Stack Project"}
+              </span>
+              <div className="text-sm md:text-base font-bold text-white mt-1 line-clamp-1">
+                {project.title}
+              </div>
+            </div>
+          )}
+        </div>
+      )}
 
       <h3 className="text-xl font-semibold mb-2 group-hover:text-violet-400 transition-colors">
         {project.title}
