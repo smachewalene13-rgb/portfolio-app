@@ -34,7 +34,7 @@ export async function runSeeds() {
           'Building modern web experiences with React & Node.js. I design and develop fast, accessible, and beautiful applications that solve real problems.',
           'Hi, I am Simachew Alene — a full-stack developer passionate about building delightful web applications. I specialize in React, Node.js, and PostgreSQL, and I care deeply about clean code, accessibility, and performance.',
           'smachewalene13@gmail.com',
-          'Addis Ababa, Ethiopia',
+          'Injibara, Ethiopia',
           '/hero.jpg',
           '/resume.pdf',
           'https://github.com',
