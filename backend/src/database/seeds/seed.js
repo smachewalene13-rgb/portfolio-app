@@ -114,8 +114,8 @@ export async function runSeeds() {
             "A modern cafe and restaurant web application designed to showcase menu offerings, streamline online ordering, and facilitate customer reservations.",
           image_url:
             "https://images.unsplash.com/photo-1554118811-1e0d58224f24?auto=format&fit=crop&w=1200&q=80",
-          live_url: "https://portfolio-1uv65r27m-sami-b153.vercel.app/",
-          repo_url: "https://github.com/smachewalene13-rgb",
+          live_url: "https://sami-cafe-restaurant.vercel.app/",
+          repo_url: "https://github.com/smachewalene13-rgb/sami-cafe-restaurant",
           tags: ["react", "node.js", "tailwind css", "javascript"],
           featured: true,
           published: true,
